@@ -7,7 +7,7 @@ class EwoMail
 
     private static $config = [];
 
-    private static $ewomail_path = '/ewomail/www/ewomail_admin';
+    private static $ewomail_path = '/ewomail/www/ewomail-admin';
     
 	/**
 	 * @return void
