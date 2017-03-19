@@ -28,6 +28,10 @@ CPU：1核
 
 硬盘：40G
 
+ **检查swap** 
+
+安装前需要swap缓存，请务必先检查swap是否已经启动。
+
  **手动安装**
 
 下载并重新命名为ewomail.zip
@@ -36,7 +40,11 @@ CPU：1核
 ```
 解压安装
 unzip -o ewomail.zip
-cd install
+cd EwoMail/install
 #需要输入一个邮箱域名，不需要前缀，列如下面的ewomail.cn
 sh ./start.sh ewomail.cn
 ```
+
+ **文档教程** 
+
+在线安装、配置等等的更多详细教程请查看[文档教程](http://doc.ewomail.com/ewomail)
