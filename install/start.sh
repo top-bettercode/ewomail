@@ -9,7 +9,6 @@
 # +----------------------------------------------------------------------
 #!/bin/bash
 cur_dir=`pwd`
-lampdir="/ewomail"
 domain=$1
 set -o pipefail
 stty erase ^h
