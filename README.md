@@ -1,8 +1,10 @@
- **EwoMail开源邮件服务器软件** 
+### EwoMail开源邮件服务器软件  
+
 
 EwoMail是基于Linux的开源邮件服务器软件，集成了众多优秀稳定的组件，是一个快速部署、简单高效、多语言、安全稳定的邮件解决方案，帮助你提升运维效率，降低 IT 成本，兼容主流的邮件客户端，同时支持电脑和手机邮件客户端。
 
- **集成组件** 
+### 集成组件
+
 
 Postfix：邮件服务器
 
@@ -16,7 +18,7 @@ EwoMail-Admin：WEB邮箱管理后台
 
 Rainloop：webmail
 
- **安装环境** 
+### 安装环境
 
 centos6系列，需要服务器的全新软环境。
 
@@ -28,11 +30,11 @@ CPU：1核
 
 硬盘：40G
 
- **检查swap** 
+### 检查swap
 
 安装前需要swap缓存，请务必先检查swap是否已经启动。
 
- **手动安装**
+### 手动安装
 
 下载并重新命名为ewomail.zip
 
@@ -45,11 +47,11 @@ cd EwoMail/install
 sh ./start.sh ewomail.cn
 ```
 
- **文档教程** 
+### 文档教程
 
 在线安装、配置等等的更多详细教程请查看[EwoMail在线文档](http://doc.ewomail.com/ewomail)
 
- **EwoMail-Admin** 
+### EwoMail-Admin
 
 EwoMail-Admin是一个邮箱管理后台，用PHP语言开发，开源免费。
 
