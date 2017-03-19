@@ -61,6 +61,17 @@ EwoMail-Admin是一个多语言邮箱管理后台，用PHP语言开发，开源�
 
 需要搭配EwoMail邮件服务器软件使用。
 
+环境要求：PHP5.4+，MYSQL5.5+
+
+EwoMail-Admin集成了前端框架、后台敏捷开发框架，利用这些框架可以很容易的进行二次开发，定制化功能来满足你的邮件服务器更多需求。
+
+ **主要功能** 
+
+1、权限管理（管理员权限分配）
+2、邮箱管理
+3、邮箱域名管理
+4、多语言
+
 [EwoMail-Admin开发教程](http://doc.ewomail.com/ewomail-admin)
 
 
