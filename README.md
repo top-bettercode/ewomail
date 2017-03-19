@@ -47,4 +47,14 @@ sh ./start.sh ewomail.cn
 
  **文档教程** 
 
-在线安装、配置等等的更多详细教程请查看[文档教程](http://doc.ewomail.com/ewomail)
+在线安装、配置等等的更多详细教程请查看[EwoMail在线文档](http://doc.ewomail.com/ewomail)
+
+ **EwoMail-Admin** 
+
+EwoMail-Admin是一个邮箱管理后台，用PHP语言开发，开源免费。
+
+自主原生开发，没有采用第三方框架，简单高效、易二次开发。
+
+需要搭配EwoMail邮件服务器软件使用。
+
+[开发教程](http://doc.ewomail.com/ewomail)
