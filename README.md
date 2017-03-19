@@ -64,6 +64,5 @@ EwoMail-Admin是一个多语言邮箱管理后台，用PHP语言开发，开源�
 [EwoMail-Admin开发教程](http://doc.ewomail.com/ewomail-admin)
 
 
-Email：services@ewomail.cn
 
 官方群：458861632
