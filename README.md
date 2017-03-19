@@ -57,4 +57,4 @@ EwoMail-Admin是一个邮箱管理后台，用PHP语言开发，开源免费。
 
 需要搭配EwoMail邮件服务器软件使用。
 
-[开发教程](http://doc.ewomail.com/ewomail)
+[开发教程](http://doc.ewomail.com/ewomail-admin)
