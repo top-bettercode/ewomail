@@ -55,7 +55,7 @@ sh ./start.sh ewomail.cn
 
 ### EwoMail-Admin
 
-EwoMail-Admin是一个邮箱管理后台，用PHP语言开发，开源免费。
+EwoMail-Admin是一个多语言邮箱管理后台，用PHP语言开发，开源免费。
 
 自主原生开发，没有采用第三方框架，简单高效、易二次开发。
 
