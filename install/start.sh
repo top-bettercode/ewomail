@@ -158,8 +158,8 @@ init(){
     service spamassassin start
     service amavisd start
     service dovecot start
-    service postfix start
     service httpd start
+    service postfix restart
     
     echo "Complete installation"
 }
