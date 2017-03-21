@@ -692,7 +692,7 @@ smtpd_sasl_local_domain =
 smtpd_sasl_security_options=noanonymous
 smtpd_delay_reject = yes
 broken_sasl_auth_clients = yes
-#smtpd_sasl_authenticated_header = no
+
 #### TLS bits ####
 smtpd_tls_auth_only = no
 smtp_use_tls = yes
@@ -715,19 +715,17 @@ disable_vrfy_command = yes
 smtpd_sender_login_maps = mysql:/etc/postfix/mysql/mysql-sender-login-maps.cf
 
 smtpd_reject_unlisted_sender = yes
-#smtpd_sender_restrictions = check_sender_access mysql:/etc/postfix/mysql/mysql-no-get.cf,reject_sender_login_mismatch, reject_authenticated_sender_login_mismatch, reject_unauthenticated_sender_login_mismatch
+
 smtpd_sender_restrictions = permit_mynetworks, reject_sender_login_mismatch, permit_sasl_authenticated
 recipient_bcc_maps = mysql:/etc/postfix/mysql/mysql_bcc_user.cf
 
-#smtpd_recipient_restrictions = reject_unknown_sender_domain, reject_unknown_recipient_domain, reject_non_fqdn_sender, reject_non_fqdn_recipient, reject_unlisted_recipient, permit_mynetworks, permit_sasl_authenticated, reject_unauth_destination, reject_non_fqdn_helo_hostname, reject_invalid_helo_hostname, check_policy_service unix:private/policy-spf
 smtpd_recipient_restrictions = reject_unknown_sender_domain,reject_sender_login_mismatch,reject_authenticated_sender_login_mismatch,permit_sasl_authenticated,permit_mynetworks, reject_unauth_destination,reject_unknown_recipient_domain,check_policy_service unix:private/policy-spf
-#virtual_transport = lmtp:unix:private/dovecot-lmtp
+
 virtual_mailbox_domains = mysql:/etc/postfix/mysql/mysql-mailbox-domains.cf
 virtual_mailbox_maps = mysql:/etc/postfix/mysql/mysql-mailbox-maps.cf  
 virtual_alias_maps = mysql:/etc/postfix/mysql/mysql-alias-maps.cf
 
 
-#mailbox_command = /usr/local/libexec/dovecot/deliver
 virtual_transport = lmtp:unix:private/dovecot-lmtp
 smtp-amavis_destination_recipient_limit = 1
 
@@ -736,7 +734,6 @@ mailbox_size_limit = 0
 #×Ö½ÚÏÞÖÆ
 #message_size_limit = 1048576
 content_filter = smtp-amavis:[127.0.0.1]:10024
-#content_filter = smtp:[127.0.0.1]:10091
 
 policy_time_limit = 3600
 
@@ -747,6 +744,3 @@ maximal_backoff_time = 300s
 
 bounce_queue_lifetime = 300s
 maximal_queue_lifetime = 300s
-
-#transport_maps = hash:/etc/postfix/transport
-#check_policy_service inet:127.0.0.1:10091,

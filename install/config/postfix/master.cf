@@ -103,15 +103,6 @@ scache    unix  -       -       n       -       1       scache
 #  flags=FR user=list argv=/usr/lib/mailman/bin/postfix-to-mailman.py
 #  ${nexthop} ${user}
 
-#myphp unix -       n       n       -       -       pipe
-#    user=myphp argv=/home/test/cmd.php
-
-#bounce    unix  -       -       n       -       -       lmtp
-#    -o content_filter=myphp
-
-#smtp inet n  -   -   -   -  smtpd
-#    -o content_filter=myphp:dummy
-
 ## spf check
 policy-spf unix -       n       n       -       -       spawn
   user=nobody argv=/usr/bin/perl /usr/libexec/postfix/postfix-policyd-spf-perl
@@ -124,9 +115,6 @@ submission inet n       -       n       -       -       smtpd
   -o smtpd_client_restrictions=permit_mynetworks,permit_sasl_authenticated,reject
 #  -o content_filter=smtp-amavis:[127.0.0.1]:10026
 
-# Use dovecot deliver program as LDA.
-#dovecot unix    -       n       n       -       -      pipe
-#    flags=DRhu user=vmail:vmail argv=/usr/local/libexec/dovecot/deliver -f ${sender} -d ${user}@${domain} -m ${extension}
 
 smtp-amavis unix -  -   -   -   2  smtp
     -o smtp_data_done_timeout=1200
