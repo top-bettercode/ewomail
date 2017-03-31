@@ -51,8 +51,8 @@ RUN rm -rf /home/ewomail-lamp-1.0-el6.x86_64.rpm && \
 ADD install/config/dovecot    /etc/dovecot
 ADD install/config/postfix    /etc/postfix
 ADD install/soft/httpd.init   /etc/rc.d/init.d/httpd
-ADD install/soft/php.ini      /ewomail/php/etc
-ADD install/soft/php-cli.ini  /ewomail/php/etc
+ADD install/soft/php.ini      /ewomail/php/etc/
+ADD install/soft/php-cli.ini  /ewomail/php/etc/
 ADD install/soft/dovecot.init /etc/rc.d/init.d/dovecot
 ADD install/config/mail/*     /ewomail/mail/
 
