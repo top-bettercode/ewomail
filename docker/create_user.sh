@@ -5,8 +5,8 @@ groupadd -g 501 mysql
 useradd -M -u 501 -g mysql -s /sbin/nologin mysql
 
 # 创建存放mysql和邮件的数据目录
-mkdir /home/EwoMail/data/mysql
-mkdir /home/EwoMail/data/vmail
+mkdir -p /home/EwoMail/data/mysql
+mkdir -p /home/EwoMail/data/vmail
 
 chown -R mysql:mysql /home/EwoMail/data/mysql
 chown -R vmail:vmail /home/EwoMail/data/vmail
