@@ -80,16 +80,19 @@ RUN groupadd -g 5000 vmail && \
     amavisd genrsa /ewomail/dkim/mail.pem && \
     chown -R amavis:amavis /ewomail/dkim
 
-ADD install/init.php      /home/
-ADD docker/base/entrypoint.sh               /home/
+ADD install/init.php                  /home/
+ADD docker/base/entrypoint.sh         /home/
 RUN chmod -R 700 /home/init.php && \    
     chmod -R 700 /home/entrypoint.sh
+
+#RUN /ewomail/mysql/bin/mysqld --user=mysql && \
+#    /ewomail/php/bin/php -f /home/init.php
 #    chmod -R 440 /ewomail/config.ini 
 
-EXPOSE 25 109 110 143 465 587 993 995
+EXPOSE 25 109 110 143 465 587 993 995 8000 8010
 
 VOLUME ["/ewomail/mysql/data"]
 VOLUME ["/ewomail/mail"]
 
 ENTRYPOINT ["/home/entrypoint.sh"]
-CMD ["mydomain.com"]
+
