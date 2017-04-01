@@ -166,7 +166,11 @@ class init{
             if(preg_match('/^\\$mydomain/',$line)){
                 $c = "\$mydomain = '{$this->domain}';\n";
             }else if(preg_match('/\\$myhostname/',$line)){
-                $c = "\$myhostname = 'mail.{$this->domain}'\n;";
+                $c = "\$myhostname = 'mail.{$this->domain}';\n";
+            }else if(preg_match('/\\$final_banned_destiny/',$line)){
+                $c = "\$final_banned_destiny = D_PASS;\n";
+            }else if(preg_match('/\\$final_bad_header_destiny/',$line)){
+                $c = "\$final_bad_header_destiny = D_PASS;\n";
             }else{
                 $c = $line;
             }

@@ -732,7 +732,7 @@ smtp-amavis_destination_recipient_limit = 1
 mailbox_size_limit = 0
 
 #×Ö½ÚÏŞÖÆ
-#message_size_limit = 1048576
+message_size_limit = 0
 content_filter = smtp-amavis:[127.0.0.1]:10024
 
 policy_time_limit = 3600
