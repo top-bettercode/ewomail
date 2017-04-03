@@ -17,9 +17,9 @@ Rout::get('index',function(){
     $user = Session::get('user');
 
     if($user){
-        header("Location:".U('/System'));
+        header("Location:".U('/System/index'));
     }else{
-        header("Location:".U('/Index/login'));
+        header("Location:".U('/Center/Index/login'));
     }
     exit;
     
@@ -28,7 +28,7 @@ Rout::get('index',function(){
 Rout::get('login',function(){
     $lofinInfo = Session::get('loginInfo');
     if($lofinInfo){
-        header("Location:".U('/System'));
+        header("Location:".U('/System/index'));
         exit;
     }
     Tp::display();

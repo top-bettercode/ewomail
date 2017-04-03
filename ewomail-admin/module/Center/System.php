@@ -60,7 +60,7 @@ Rout::get('index',function(){
 //退出
 Rout::get('out',function(){
     Session::clear();
-    header("Location:/Index/login");
+    header("Location:".U('/Index/login'));
     exit;
 });
 

@@ -51,7 +51,7 @@ $(function(){
 			$.post('',$("#myform").serialize(),function(d){
 				layer.close(ii);
 				if(d.status==1){
-					window.location.href = '/System';
+					window.location.href = '{U("/System/index")}';
 				}else{
 					layer.msg(d.msg);
 					$("#captcha").attr("src",getCaptcha());
@@ -65,7 +65,7 @@ $(function(){
 	function getCaptcha()
 	{
 		var d = new Date()
-		return '/Index/captcha?'+d.getTime();
+		return '{U("/Index/captcha")}?'+d.getTime();
 	}
 	
 	$("#captcha").attr("src",getCaptcha());
