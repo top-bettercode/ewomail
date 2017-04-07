@@ -15,13 +15,20 @@ ENV TERM xterm
 ADD install/soft/epel-6.repo /etc/yum.repos.d/epel.repo
 
 # 安装软件
-RUN yum -y install postfix perl-DBI perl-JSON-XS perl-NetAddr-IP perl-Mail-SPF perl-Sys-Hostname-Long && \
-    yum -y install freetype* libpng* libjpeg* iptables amavisd-new && \
-    yum -y install --enablerepo=epel pwgen python-pip && \
+RUN yum -y install wget && \
+    wget -P /etc/yum.repos.d https://repos.fedorapeople.org/repos/mstevens/postfix/epel-postfix.repo && \
+    yum -y install postfix
+
+#RUN wget -P /etc/yum.repos.d/ http://repos.fedorapeople.org/repos/mstevens/dovecot/epel-dovecot.repo && \
+#    yum -y install dovecot dovecot-devel dovecot-mysql pam-devel
+
+RUN yum -y install perl-DBI perl-JSON-XS perl-NetAddr-IP perl-Mail-SPF perl-Sys-Hostname-Long && \
+    yum -y install freetype* libpng* libjpeg*  amavisd-new && \
     yum clean all
 
 # 安装supervisor
-RUN pip install supervisor    
+#RUN yum -y install --enablerepo=epel pwgen python-pip
+#RUN pip install supervisor
 
 # 反垃圾邮件设置
 RUN chmod -R 770 /var/spool/amavisd/tmp && \
@@ -44,8 +51,8 @@ ADD install/soft/postfix-policyd-spf-perl /usr/libexec/postfix/
 RUN chmod -R 755 /usr/libexec/postfix/postfix-policyd-spf-perl
 
 # 集中清理安装包
-RUN rm -rf /home/ewomail-lamp-1.0-el6.x86_64.rpm && \
-    rm -rf /home/dovecot-2.2.24-el6.x86_64.rpm
+RUN rm -rf /home/ewomail-lamp-1.0-el6.x86_64.rpm
+
 
 # 添加配置文件
 ADD install/config/dovecot    /etc/dovecot
@@ -55,6 +62,10 @@ ADD install/soft/php.ini      /ewomail/php/etc/
 ADD install/soft/php-cli.ini  /ewomail/php/etc/
 ADD install/soft/dovecot.init /etc/rc.d/init.d/dovecot
 ADD install/config/mail/*     /ewomail/mail/
+
+# 清理换行
+RUN sed -i 's/\r$//' /etc/rc.d/init.d/httpd && \
+    sed -i 's/\r$//' /etc/rc.d/init.d/dovecot
 
 RUN ln -s /etc/amavisd/amavisd.conf /etc && \
     mv /etc/clamd.conf /etc/clamd.conf.backup && \
@@ -67,7 +78,9 @@ RUN ln -s /etc/amavisd/amavisd.conf /etc && \
 # 生成签名
 RUN chmod 755 /usr/local/dovecot/share/doc/dovecot/mkcert.sh && \
     cd /usr/local/dovecot/share/doc/dovecot/ && \
-    sh mkcert.sh    
+    sh mkcert.sh
+#RUN cd /usr/libexec/dovecot && \
+#    sh mkcert.sh
 
 RUN groupadd -g 5000 vmail && \
     useradd -M -u 5000 -g vmail -s /sbin/nologin vmail && \   
