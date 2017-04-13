@@ -25,6 +25,8 @@ Dovecot：IMAP/POP3/邮件存储
 
 Amavisd：反垃圾和反病毒
 
+fail2ban：监控策略
+
 LAMP：apache2.2，mysql5.5，php5.4
 
 EwoMail-Admin：WEB邮箱管理后台
