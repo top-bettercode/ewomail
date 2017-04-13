@@ -167,12 +167,8 @@ class init{
                 $c = "\$mydomain = '{$this->domain}';\n";
             }else if(preg_match('/\\$myhostname/',$line)){
                 $c = "\$myhostname = 'mail.{$this->domain}';\n";
-            }else if(preg_match('/\\$final_virus_destiny/',$line)){
-                $c = "\$final_virus_destiny = D_PASS;\n";
             }else if(preg_match('/\\$final_banned_destiny/',$line)){
                 $c = "\$final_banned_destiny = D_PASS;\n";
-            }else if(preg_match('/\\$final_spam_destiny/',$line)){
-                $c = "\$final_spam_destiny = D_PASS;\n";
             }else if(preg_match('/\\$final_bad_header_destiny/',$line)){
                 $c = "\$final_bad_header_destiny = D_PASS;\n";
             }else{
