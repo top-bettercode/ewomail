@@ -154,12 +154,12 @@ class User extends App
             //密码字符数错误
             E::error(2020);
         }
-
+        /*
         if(!preg_match("/[a-z]+[0-9]+/i",$password)){
             //密码必须包含字母和数字
             E::error(2040);
         }
-
+        */
         if($password!=$password2){
             //2个密码不一致
             E::error(2021);

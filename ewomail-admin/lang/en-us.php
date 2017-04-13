@@ -86,7 +86,7 @@ return [
     '2014'=>'Admin (Roles)',
     '2015'=>'Change Password',
     '2016'=>'Password',
-    '2017'=>'Length 8-20 characters, must contain letters and numbers',
+    '2017'=>'Length 8-20 characters, please set the password more complex, it is best to include numbers and letters',
     '2018'=>'Confirm Password',
     '2019'=>'Administrator Account Format Error',
     '2020'=>'Password character length is incorrect',

@@ -220,15 +220,9 @@ class Admin extends App
         }
         
         if($is_password){
-            if(strlen($new_password)<6 || strlen($new_password)>20){
-                //密码字符数错误
-                E::error(2020);
-            }
-            if($new_password!=$new_password2){
-                //2个密码不一致
-                E::error(2021);
-            }
+            User::checkPassword($new_password,$new_password2);
         }
+        
         $newData = [
             'name'=>$name,
             'password'=>md5($new_password)
