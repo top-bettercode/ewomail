@@ -1,3 +1,16 @@
+### 1.03更新内容 
+
+
+1、添加fail2ban监控
+
+    利用fail2ban可以有效的保护ssh和mail账号密码被破解。
+
+    默认规则：1个IP，1个小时内密码错误5次将禁止10个小时的链接
+
+2、继续修复amavisd丢弃通知邮件问题
+
+3、修复邮箱管理后台若干BUG
+
 ### EwoMail开源邮件服务器软件  
 
 
@@ -11,6 +24,8 @@ Postfix：邮件服务器
 Dovecot：IMAP/POP3/邮件存储
 
 Amavisd：反垃圾和反病毒
+
+fail2ban：监控策略
 
 LAMP：apache2.2，mysql5.5，php5.4
 
