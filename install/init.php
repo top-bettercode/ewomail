@@ -167,8 +167,12 @@ class init{
                 $c = "\$mydomain = '{$this->domain}';\n";
             }else if(preg_match('/\\$myhostname/',$line)){
                 $c = "\$myhostname = 'mail.{$this->domain}';\n";
+            }else if(preg_match('/\\$final_virus_destiny/',$line)){
+                $c = "\$final_virus_destiny = D_PASS;\n";
             }else if(preg_match('/\\$final_banned_destiny/',$line)){
                 $c = "\$final_banned_destiny = D_PASS;\n";
+            }else if(preg_match('/\\$final_spam_destiny/',$line)){
+                $c = "\$final_spam_destiny = D_PASS;\n";
             }else if(preg_match('/\\$final_bad_header_destiny/',$line)){
                 $c = "\$final_bad_header_destiny = D_PASS;\n";
             }else{
@@ -201,6 +205,21 @@ dkim_key("'.$this->domain.'", "dkim", "/ewomail/dkim/mail.pem");
                 $c = "mydomain = {$this->domain}\n";
             }else if(preg_match('/^myhostname/',$line)){
                 $c = "myhostname = mail.{$this->domain}\n";
+            }else{
+                $c = $line;
+            }
+            return $c;
+        });
+        
+        //fail2ban
+        $fail2ban_conf = "/etc/fail2ban/fail2ban.conf";
+        $this->op_file($fail2ban_conf,function($line){
+            if (trim($line) == '') {  
+                return $line;
+            }
+
+            if(preg_match('/^logtarget/',$line)){
+                $c = "logtarget = /var/log/fail2ban.log\n";
             }else{
                 $c = $line;
             }

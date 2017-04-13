@@ -294,7 +294,8 @@ sub sender_policy_framework {
                 $attr->{helo_name} || '<UNKNOWN>'
             );
         };
-        return "DEFER_IF_PERMIT SPF-Result=$helo_local_exp";
+        #return "DEFER_IF_PERMIT SPF-Result=$helo_local_exp";
+        return "PREPEND Received-SPF: none";
     }
     elsif ($attr->{sender} eq '') {
         if ($VERBOSE) {
@@ -371,7 +372,8 @@ sub sender_policy_framework {
         return "550 $mfrom_authority_exp";
     }
     elsif ($mfrom_result->is_code('temperror')) {
-        return "DEFER_IF_PERMIT SPF-Result=$mfrom_local_exp";
+        #return "DEFER_IF_PERMIT SPF-Result=$mfrom_local_exp";
+        return "PREPEND Received-SPF: none";
     }
     else {
         return "PREPEND $mfrom_spf_header"

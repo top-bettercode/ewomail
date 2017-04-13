@@ -53,6 +53,9 @@ config_file(){
     cp -rf $cur_dir/soft/php.ini /ewomail/php/etc
     cp -rf $cur_dir/soft/php-cli.ini /ewomail/php/etc
     
+    cp -rf $cur_dir/config/fail2ban/jail.local /etc/fail2ban
+    cp -rf $cur_dir/config/fail2ban/postfix.ewomail.conf /etc/fail2ban/filter.d
+    
     cp -rf $cur_dir/soft/dovecot.init /etc/rc.d/init.d/dovecot
     chmod -R 755 /etc/rc.d/init.d/dovecot
     cd /usr/local/dovecot/share/doc/dovecot
@@ -101,7 +104,7 @@ init(){
     
     yum remove sendmail
     epel_install
-    yum -y install postfix perl-DBI perl-JSON-XS perl-NetAddr-IP perl-Mail-SPF perl-Sys-Hostname-Long freetype* libpng* libjpeg* iptables
+    yum -y install postfix perl-DBI perl-JSON-XS perl-NetAddr-IP perl-Mail-SPF perl-Sys-Hostname-Long freetype* libpng* libjpeg* iptables fail2ban
     rpm -ivh $cur_dir/soft/ewomail-lamp-1.0-el6.x86_64.rpm
     
     if [ $? != 0 ] ; then echo "ewomail-lamp install failed" >&2 ; exit 1 ; fi
@@ -152,6 +155,7 @@ init(){
     chkconfig postfix on
     chkconfig dovecot on
     chkconfig httpd on
+    chkconfig fail2ban on
     
     service iptables restart
     service clamd start
@@ -160,6 +164,7 @@ init(){
     service dovecot start
     service httpd start
     service postfix restart
+    service fail2ban start
     
     echo "Complete installation"
 }
