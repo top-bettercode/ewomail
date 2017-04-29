@@ -1,4 +1,4 @@
-#!/ewomail/php/bin/php
+#!/ewomail/php54/bin/php
 <?php
 // +----------------------------------------------------------------------
 // | EwoMail
@@ -227,20 +227,7 @@ dkim_key("'.$this->domain.'", "dkim", "/ewomail/dkim/mail.pem");
         $apache_str = "
 Listen 8000 
 Listen 8010
-#Listen 8020
-
-NameVirtualHost *:80
-
-<VirtualHost _default_:80>
-DocumentRoot /ewomail/www/default/
-DirectoryIndex index.php index.html index.htm
-<Directory /ewomail/www/default/>
-Options +Includes -Indexes
-AllowOverride All
-Order Deny,Allow
-Allow from All
-</Directory>
-</VirtualHost>
+Listen 8020
 
 <VirtualHost *:8010>
 ServerName localhost

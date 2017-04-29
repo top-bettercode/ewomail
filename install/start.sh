@@ -14,8 +14,19 @@ set -o pipefail
 stty erase ^h
 setenforce 0
 
+centos7=false
+
+if [ -f "/usr/lib/systemd/system/network.target" ]; then
+    centos7=true
+fi
+
 dovecot_install(){
-    rpm -ivh $cur_dir/soft/dovecot-2.2.24-el6.x86_64.rpm
+    if [ $centos7 = true ] ; then 
+        rpm -ivh $cur_dir/soft/centos7-dovecot-2.2.24-el6.x86_64.rpm
+    else
+        rpm -ivh $cur_dir/soft/dovecot-2.2.24-el6.x86_64.rpm
+    fi
+    
 }
 
 spf_install(){
@@ -24,21 +35,45 @@ spf_install(){
 }
 
 amavis_install(){
-    yum install -y amavisd-new
-    chmod -R 770 /var/spool/amavisd/tmp
-    usermod -G amavis clam
+    if [ $centos7 = true ] ; then 
+        yum -y install amavisd-new clamav-server clamav-server-systemd iptables-services
+        cp -rf $cur_dir/config/clamav/clamd.amavisd /etc/sysconfig
+        cp -rf $cur_dir/config/clamav/clamd.amavisd.conf /etc/tmpfiles.d
+        cp -rf $cur_dir/config/clamav/clamd@.service /usr/lib/systemd/system
+    else
+        yum -y install amavisd-new
+        chmod -R 770 /var/spool/amavisd/tmp
+        usermod -G amavis clam
+        ln -s /etc/amavisd/amavisd.conf /etc
+        mv /etc/clamd.conf /etc/clamd.conf.backup
+        cp -rf /etc/clamd.d/amavisd.conf /etc/clamd.conf
+    fi
+    
 }
 
 epel_install(){
-    cp -f $cur_dir/soft/epel-6.repo /etc/yum.repos.d/epel-6.repo
+    if [ $centos7 = true ] ; then 
+        rpm -ivh $cur_dir/soft/epel-release-latest-7.noarch.rpm
+    else
+        cp -f $cur_dir/soft/epel-6.repo /etc/yum.repos.d/epel-6.repo
+    fi
 }
 
 config_file(){
+    
+    if [ $centos7 = true ] ; then 
+        mv /etc/my.cnf /etc/my.cnf.backup
+        ln -s /ewomail/mysql/etc/my.cnf /etc
+        cp -rf $cur_dir/soft/dovecot.service /usr/lib/systemd/system
+    else
+        cp -rf $cur_dir/soft/dovecot.init /etc/rc.d/init.d/dovecot
+        chmod -R 755 /etc/rc.d/init.d/dovecot
+    fi
+    
+    cp -rf $cur_dir/soft/httpd.conf /ewomail/apache/conf
+    
     cp -rf $cur_dir/config/dovecot /etc
     cp -rf $cur_dir/config/postfix /etc
-    ln -s /etc/amavisd/amavisd.conf /etc
-    mv /etc/clamd.conf /etc/clamd.conf.backup
-    cp -rf /etc/clamd.d/amavisd.conf /etc/clamd.conf
     
     mv /etc/sysconfig/iptables /etc/sysconfig/iptables.backup
     cp -rf $cur_dir/soft/iptables /etc/sysconfig/iptables
@@ -50,14 +85,18 @@ config_file(){
     cp -rf $cur_dir/soft/httpd.init /etc/rc.d/init.d/httpd
     chmod -R 755 /etc/rc.d/init.d/httpd
     
-    cp -rf $cur_dir/soft/php.ini /ewomail/php/etc
-    cp -rf $cur_dir/soft/php-cli.ini /ewomail/php/etc
+    cp -rf $cur_dir/soft/nginx.init /etc/rc.d/init.d/nginx
+    chmod -R 755 /etc/rc.d/init.d/nginx
+    
+    cp -rf $cur_dir/soft/php.ini /ewomail/php54/etc
+    cp -rf $cur_dir/soft/php-cli.ini /ewomail/php54/etc
+    
+    cp -rf $cur_dir/soft/php-fpm.init /etc/rc.d/init.d/php-fpm
+    chmod -R 755 /etc/rc.d/init.d/php-fpm
     
     cp -rf $cur_dir/config/fail2ban/jail.local /etc/fail2ban
     cp -rf $cur_dir/config/fail2ban/postfix.ewomail.conf /etc/fail2ban/filter.d
     
-    cp -rf $cur_dir/soft/dovecot.init /etc/rc.d/init.d/dovecot
-    chmod -R 755 /etc/rc.d/init.d/dovecot
     cd /usr/local/dovecot/share/doc/dovecot
     sh mkcert.sh
 }
@@ -112,7 +151,10 @@ init(){
     mkdir -p /ewomail/www/default
     cp -rf $cur_dir/../ewomail-admin /ewomail/www/
     cp -rf $cur_dir/../rainloop /ewomail/www/
-
+    
+    cd /ewomail/www
+    tar zxvf $cur_dir/soft/phpMyAdmin.tar.gz
+    
     cd $cur_dir
     
     dovecot_install
@@ -124,7 +166,7 @@ init(){
     groupadd -g 5000 vmail
     useradd -M -u 5000 -g vmail -s /sbin/nologin vmail
     
-    cp -rf $cur_dir/config/mail/* /ewomail/mail/
+    cp -rf $cur_dir/config/mail /ewomail
     
     chown -R vmail:vmail /ewomail/mail
     chmod -R 700 /ewomail/mail
@@ -148,23 +190,40 @@ init(){
     rm -rf /ewomail/www/tz.php
     
     
-    chkconfig mysqld on
-    chkconfig clamd on
-    chkconfig spamassassin on
-    chkconfig amavisd on
-    chkconfig postfix on
-    chkconfig dovecot on
-    chkconfig httpd on
-    chkconfig fail2ban on
-    
-    service iptables restart
-    service clamd start
-    service spamassassin start
-    service amavisd start
-    service dovecot start
-    service httpd start
-    service postfix restart
-    service fail2ban start
+    if [ $centos7 = true ] ; then 
+        chkconfig mysqld on
+        chkconfig httpd on
+        systemctl enable postfix dovecot amavisd spamassassin fail2ban clamd@amavisd iptables
+        
+        
+        service httpd start
+        systemctl restart amavisd spamassassin clamd@amavisd
+        systemctl restart postfix dovecot fail2ban
+        
+        systemctl mask firewalld.service
+        systemctl stop firewalld.service
+        systemctl restart iptables
+        
+    else
+        chkconfig mysqld on
+        chkconfig clamd on
+        chkconfig spamassassin on
+        chkconfig amavisd on
+        chkconfig postfix on
+        chkconfig dovecot on
+        chkconfig httpd on
+        chkconfig fail2ban on
+        
+        service iptables restart
+        service clamd start
+        service spamassassin start
+        service amavisd start
+        service dovecot start
+        service httpd start
+        service postfix restart
+        service fail2ban start
+    fi
+
     
     echo "Complete installation"
 }
