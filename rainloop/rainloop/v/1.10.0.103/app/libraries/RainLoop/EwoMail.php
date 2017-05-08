@@ -48,15 +48,15 @@ class EwoMail
      * 修改密码
      * @param $email
      * @param $password
-     * @param $new_passowrd
+     * @param $new_password
      * @return mixed|null
      */
-    public function updatePassword($email,$password,$new_passowrd)
+    public function updatePassword($email,$password,$new_password)
     {
         $newData = [
             'email'=>$email,
             'password'=>$password,
-            'new_passowrd'=>$new_passowrd
+            'new_password'=>$new_password
         ];
         $r = $this->send('User/update_password',$newData);
         return $r;
