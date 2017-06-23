@@ -99,6 +99,6 @@ EwoMail-Admin集成了前端框架、后台敏捷开发框架，利用这些框�
 
 ### webmail
 
-![webmail](https://git.kancloud.cn/repos/gyxuehu/ewomail/raw/master/image/screenshot_1489239369209.png?access-token=099401ed7b3834be2f279e1972038ca9 "webmail")
+![webmail](https://box.kancloud.cn/3de1da2809f14048fb4cb3b32d0408d1_1183x476.png "webmail")
 
 官方群：458861632
