@@ -22,7 +22,7 @@ RUN yum -y install wget && \
 #RUN wget -P /etc/yum.repos.d/ http://repos.fedorapeople.org/repos/mstevens/dovecot/epel-dovecot.repo && \
 #    yum -y install dovecot dovecot-devel dovecot-mysql pam-devel
 
-RUN yum -y install perl-DBI perl-JSON-XS perl-NetAddr-IP perl-Mail-SPF perl-Sys-Hostname-Long && \
+RUN yum -y install rsyslog perl-DBI perl-JSON-XS perl-NetAddr-IP perl-Mail-SPF perl-Sys-Hostname-Long && \
     yum -y install freetype* libpng* libjpeg*  amavisd-new && \
     yum clean all
 

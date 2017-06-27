@@ -1,3 +1,3 @@
-dockerfile=/home/EwoMail/docker/base/Dockerfile
+dockerfile=./docker/base/Dockerfile
 cd ..
-docker build -t ewo/ewomailserver -f  $dockerfile .
+docker build -t bestwu/ewomailserver -f  $dockerfile .

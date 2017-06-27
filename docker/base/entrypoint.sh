@@ -1,10 +1,13 @@
 #!/bin/bash
 
 if [ -d "/ewomail/mysql/data" -a ! -e "/ewomail/mail/first.runed" ]; then
-    rm -rf /ewomail/mysql/data
+    rm -rf /ewomail/mysql/data/*
+    chown -R mysql:mysql /ewomail/mysql/data
+    chown -R vmail:vmail /ewomail/mail
     /ewomail/mysql/scripts/mysql_install_db --user=mysql --datadir=/ewomail/mysql/data --basedir=/ewomail/mysql
 fi
-
+chown -R mysql:mysql /ewomail/mysql/data
+chown -R vmail:vmail /ewomail/mail
 service mysqld start
 
 if [ ! -d "/ewomail/mysql/data/ewomail" -a ! -e "/ewomail/mail/first.runed" ]; then
