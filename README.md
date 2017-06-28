@@ -1,114 +1,115 @@
-### 2018-8-20更新说明
-更新centos7.5与redhat 脚本问题
+### 
+[EwoMail 开源企业邮件系统](http://www.ewomail.com/) 的docker镜像
 
-### 2018-8-10更新说明
+[EwoMail 官方文档](http://doc.ewomail.com/ewomail/285649)
 
-centos7 安装兼容更新，之前下载安装包的朋友请重新下载，已安装的不需改动。
+EwoMail-Admin版本为1.05
 
-
-### 1.05更新内容 
-
-
-1、兼容centos7
-
-    将部分主要的组件重新打包，测试，并且兼容centos6和centos7。
-
-2、新加nginx
-
-    默认绑定80端口，需手动启动。
-
-3、新加php-fpm
-
-    可以利用nginx配置php-fpm或apache，php-fpm默认端口9000，需手动启动。
-
-4、apache
-    
-    取消apache绑定的80端口，邮箱管理后台与webmail保留端口，保持原来的apache运行。
-
-### EwoMail开源邮件服务器软件  
-
-
-EwoMail是基于Linux的开源邮件服务器软件，集成了众多优秀稳定的组件，是一个快速部署、简单高效、多语言、安全稳定的邮件解决方案，帮助你提升运维效率，降低 IT 成本，兼容主流的邮件客户端，同时支持电脑和手机邮件客户端。
-
-### 集成组件
-
-
-Postfix：邮件服务器
-
-Dovecot：IMAP/POP3/邮件存储
-
-Amavisd：反垃圾和反病毒
-
-fail2ban：监控策略
-
-LNAMP：apache2.2，nginx1.8，mysql5.5，php5.4
-
-EwoMail-Admin：WEB邮箱管理后台
-
-Rainloop：webmail
-
-### 安装环境
-
-centos6/7系统，服务器需要干净环境，最好是全新安装的系统。
-
-最低配置要求
-
-CPU：1核
-
-内存：1G
-
-硬盘：40G
-
-### 检查swap
-
-安装前需要swap缓存，请务必先检查swap是否已经启动。
-
-### 手动安装
-
-下载并重新命名为ewomail.zip
-
-
+### 生成docker image
+cd 到ewomail项目目录，执行
 ```
-解压安装
-unzip -o ewomail.zip
-cd EwoMail/install
-#需要输入一个邮箱域名，不需要前缀，列如下面的ewomail.cn
-sh ./start.sh ewomail.cn
+./build-docker-images.sh
+```
+会生成名为**bestwu/ewomailserver**的镜像。
+
+### 运行docker
+
+mail.ewomail.com 换成自己的域名
+
+docker-compose方式
+
+```yml
+  mail:
+    image: bestwu/ewomailserver
+    hostname: mail.ewomail.com
+    container_name: ewomail
+    ports:
+      - "25:25"
+      - "143:143"
+      - "587:587"
+      - "993:993"
+      - "109:109"
+      - "110:110"
+      - "465:465"
+      - "995:995"
+      - "8000:8000"
+      - "8010:8010"
+    volumes:
+      - ./mysql:/ewomail/mysql/data
+      - ./vmail:/ewomail/mail
 ```
 
-### 文档教程
+或
 
-在线安装、配置等等的更多详细教程请查看
+```cmd
+docker run  -d -h mail.ewomail.com  -p 25:25 -p 109:109 -p 110:110 -p 143:143 -p 465:465 -p 587:587 -p 993:993 -p 995:995  \
+ -p 8000:8000 -p 8010:8010 -v /home/EwoMail/data/mysql/:/ewomail/mysql/data/ -v /home/EwoMail/data/vmail/:/ewomail/mail/ \
+ --name ewomail bestwu/ewomailserver
 
-[EwoMail在线文档](http://doc.ewomail.com/ewomail)
+```
 
-### EwoMail-Admin
+运行成功后访问
 
-EwoMail-Admin是一个多语言邮箱管理后台，用PHP语言开发，开源免费。
+[邮箱管理后台http://localhost:8010](http://localhost:8010)
 
-自主原生开发，没有采用第三方框架，简单高效、易二次开发。
+默认用户: admin
 
-需要搭配EwoMail邮件服务器软件使用。
+默认密码: ewomail123
 
-环境要求：PHP5.4+，MYSQL5.5+
+[Rainloop 管理端 http://localhost:8000/?admin](http://localhost:8000/?admin)
 
-EwoMail-Admin集成了前端框架、后台敏捷开发框架，利用这些框架可以很容易的进行二次开发，定制化功能来满足你的邮件服务器更多需求。
+默认用户: admin
 
- **主要功能** 
+默认密码: ewomail123
 
-1、权限管理（管理员权限分配）
-2、邮箱管理
-3、邮箱域名管理
-4、多语言
+[Rainloop 用户端 http://localhost:8000](http://localhost:8000)
 
-[EwoMail-Admin开发教程](http://doc.ewomail.com/ewomail-admin)
+### 设置域名DNS
 
-![ewomail-admin](https://box.kancloud.cn/c362878ba731559b09eae36b7236bde5_1366x609.png "ewomail-admin")
+这里使用万网DNS为参考
 
-### webmail
+![](dns.png)
 
-![webmail](https://box.kancloud.cn/3de1da2809f14048fb4cb3b32d0408d1_1183x476.png "webmail")
+将mail.ewomail.cn 改成你的域名
 
-### 安装或使用过程遇到问题
+红色部分请改为你的服务器IP
 
-http://www.ewomail.com/show-19-70-1.html
+### DKIM设置
+
+DKIM是电子邮件验证标准，域名密钥识别邮件标准，主要是用来防止被判定为垃圾邮件。
+
+每个域名都需要添加一个dkim的key，EwoMail默认安装后已自动添加主域名dkim，只需要设置好dkim的dns即可。
+
+    获取dkim key
+
+执行查看代码
+
+```
+docker exec ewomail amavisd showkeys
+```
+
+若安装成功会输出以下信息：
+```
+; key#1, domain ewomail.com, /ewomail/dkim/mail.pem
+dkim._domainkey.ewomail.com.	3600 TXT (
+  "v=DKIM1; p="
+  "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC09HcLpwcdgWtzkrZDBRBYfQo5"
+  "prSRyedA72wiD3vFGXLWHyy0KOXp+uwvkNzaBpvU2DDKNTTPdo1pNWtl/LkpRCVq"
+  "+uRG+LhZBuic0GpDJnD7HckUbwsyGktb/6g5ogScNtPWB+pegENFDl8BuFn3zDiD"
+  "nnGxbpj3emSxDlskzwIDAQAB")
+```
+整理后，设置DNS
+
+| 域名 	 |     记录类型 	| 主机记录 	|  记录值 |
+|---|---|---|---|
+| ewomail.com |	TXT	| dkim._domainkey  | v=DKIM1;p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC09HcLpwcdgWtzkrZDBRBYfQo5prSRyedA72wiD3vFGXLWHyy0KOXp+uwvkNzaBpvU2DDKNTTPdo1pNWtl/LkpRCVq+uRG+LhZBuic0GpDJnD7HckUbwsyGktb/6g5ogScNtPWB+pegENFDl8BuFn3zDiDnnGxbpj3emSxDlskzwIDAQAB
+
+等待10分钟后测试是否设置正确。
+
+```
+docker exec ewomail amavisd testkeys
+```
+```
+TESTING#1: dkim._domainkey.ewomail.com       => pass
+```
+显示pass则正确。

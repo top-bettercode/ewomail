@@ -95,7 +95,7 @@ RUN groupadd -g 5000 vmail && \
     chown -R mysql:mysql /ewomail/mysql/data
 
 ADD install/init.php                  /home/
-ADD docker/update_password.php       /home/
+ADD docker/base/update_password.php       /home/
 ADD docker/base/entrypoint.sh         /home/
 RUN chmod -R 700 /home/init.php && \
      chmod -R 700 /home/update_password.php && \ 
