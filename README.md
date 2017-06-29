@@ -22,6 +22,7 @@ docker-compose方式
     image: bestwu/ewomailserver
     hostname: mail.ewomail.com
     container_name: ewomail
+    restart: always
     ports:
       - "25:25"
       - "143:143"
@@ -36,6 +37,8 @@ docker-compose方式
     volumes:
       - ./mysql:/ewomail/mysql/data
       - ./vmail:/ewomail/mail
+      - ./etc/ssl/certs/:/etc/ssl/certs/
+      - ./etc/ssl/private/:/etc/ssl/private/
 ```
 
 或
