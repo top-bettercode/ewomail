@@ -32,8 +32,8 @@ docker-compose方式
       - "110:110"
       - "465:465"
       - "995:995"
-      - "8000:8000"
-      - "8010:8010"
+      - "80:80"
+      - "8080:8080"
     volumes:
       - ./mysql:/ewomail/mysql/data
       - ./vmail:/ewomail/mail
@@ -42,27 +42,36 @@ docker-compose方式
 或
 
 ```cmd
-docker run  -d -h mail.ewomail.com  -p 25:25 -p 109:109 -p 110:110 -p 143:143 -p 465:465 -p 587:587 -p 993:993 -p 995:995  \
- -p 8000:8000 -p 8010:8010 -v /home/EwoMail/data/mysql/:/ewomail/mysql/data/ -v /home/EwoMail/data/vmail/:/ewomail/mail/ \
- --name ewomail bestwu/ewomailserver
+docker run  -d -h mail.ewomail.com  -p 25:25 -p 109:109 -p 110:110 -p 143:143 -p 465:465 -p 587:587 -p 993:993 -p 995:995  -p 80:80 -p 8080:8080 -v /home/EwoMail/data/mysql/:/ewomail/mysql/data/ -v /home/EwoMail/data/vmail/:/ewomail/mail/ --name ewomail bestwu/ewomailserver
 
 ```
 
+### 可配置参数
+
+* MYSQL_ROOT_PASSWORD mysql数据库root密码，默认：mysql
+* MYSQL_MAIL_PASSWORD mysql数据库ewomail密码，默认：123456
+* URL 网站链接，后面不要加/线
+* WEBMAIL_URL 邮件系统链接，后面不要加/线
+
+### 自定义证书
+映射 /etc/ssl/certs/dovecot.pem，/etc/ssl/private/dovecot.pem，/ewomail/dkim/mail.pem
+
+
 运行成功后访问
 
-[邮箱管理后台http://localhost:8010](http://localhost:8010)
+[邮箱管理后台http://localhost:8080](http://localhost:8080)
 
 默认用户: admin
 
 默认密码: ewomail123
 
-[Rainloop 管理端 http://localhost:8000/?admin](http://localhost:8000/?admin)
+[Rainloop 管理端 http://localhost/?admin](http://localhost/?admin)
 
 默认用户: admin
 
 默认密码: ewomail123
 
-[Rainloop 用户端 http://localhost:8000](http://localhost:8000)
+[Rainloop 用户端 http://localhost](http://localhost)
 
 ### 设置域名DNS
 

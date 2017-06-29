@@ -1,19 +1,23 @@
 #!/bin/bash
 
 domain=`hostname --domain`
-if [ ! $domain ]; then
+if [ ! "$domain" ]; then
     echo '必须设置domainname'
     exit;
 fi
-echo $domain
-if [ ! $URL ]; then
+
+echo "$domain"
+
+if [ ! "$URL" ]; then
     echo '必须设置URL'
     exit;
 fi
-if [ ! $WEBMAIL_URL ]; then
+echo "$URL"
+if [ ! "$WEBMAIL_URL" ]; then
     echo '必须设置WEBMAIL_URL'
     exit;
 fi
+echo "$WEBMAIL_URL"
 
 chown -R vmail:vmail /ewomail/mail
 chmod -R 700 /ewomail/mail
@@ -27,12 +31,12 @@ fi
 
 service mysqld start
 
+/home/update_file.php "$domain" "$MYSQL_ROOT_PASSWORD" "$MYSQL_MAIL_PASSWORD" "$URL" "$WEBMAIL_URL"
 if [ ! -d "/ewomail/mysql/data/ewomail" -a ! -e "/ewomail/mail/first.runed" ]; then
-        /home/init.php $domain $MYSQL_ROOT_PASSWORD $MYSQL_MAIL_PASSWORD $URL $WEBMAIL_URL
-        rm -rf /ewomail/www/tz.php
+        /home/init_sql.php "$domain" "$MYSQL_ROOT_PASSWORD" "$MYSQL_MAIL_PASSWORD"
+        # rm -f /etc/ssl/certs/dovecot.pem /etc/ssl/private/dovecot.pem
+        # cd /usr/local/dovecot/share/doc/dovecot/ && sh mkcert.sh
         touch /ewomail/mail/first.runed
-    else
-        /home/update_password.php $domain $MYSQL_ROOT_PASSWORD $MYSQL_MAIL_PASSWORD $URL $WEBMAIL_URL
 fi
 
 service rsyslog start
