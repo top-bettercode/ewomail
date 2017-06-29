@@ -34,8 +34,8 @@ service mysqld start
 /home/update_file.php "$domain" "$MYSQL_ROOT_PASSWORD" "$MYSQL_MAIL_PASSWORD" "$URL" "$WEBMAIL_URL"
 if [ ! -d "/ewomail/mysql/data/ewomail" -a ! -e "/ewomail/mail/first.runed" ]; then
         /home/init_sql.php "$domain" "$MYSQL_ROOT_PASSWORD" "$MYSQL_MAIL_PASSWORD"
-        # rm -f /etc/ssl/certs/dovecot.pem /etc/ssl/private/dovecot.pem
-        # cd /usr/local/dovecot/share/doc/dovecot/ && sh mkcert.sh
+        rm -f /etc/ssl/certs/dovecot.pem /etc/ssl/private/dovecot.pem
+        cd /usr/local/dovecot/share/doc/dovecot/ && sh mkcert.sh
         touch /ewomail/mail/first.runed
 fi
 

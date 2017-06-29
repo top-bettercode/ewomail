@@ -95,7 +95,7 @@ ADD docker/base/init_sql.php                  /home/
 ADD docker/base/update_file.php       /home/
 ADD docker/base/entrypoint.sh         /home/
 RUN chmod -R 700 /home/init_sql.php && \
-     chmod -R 700 /home/update_file.php && \ 
+    chmod -R 700 /home/update_file.php && \
     chmod -R 700 /home/entrypoint.sh
 
 ENV MYSQL_ROOT_PASSWORD=mysql \
