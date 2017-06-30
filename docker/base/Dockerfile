@@ -1,10 +1,7 @@
 FROM scratch
 MAINTAINER Peter Wu <piterwu@outlook.com>
-ADD docker/base/centos-6-docker.tar.xz /
 
-LABEL name="CentOS Base Image" \
-    vendor="CentOS" \
-    license="GPLv2"
+ADD docker/base/centos-6-docker.tar.xz /
 
 # 设置时区
 ENV TZ="Asia/Shanghai" \
@@ -16,10 +13,9 @@ ADD install/soft/epel-6.repo /etc/yum.repos.d/epel.repo
 # 安装软件
 RUN yum -y install wget && \
     wget -P /etc/yum.repos.d https://repos.fedorapeople.org/repos/mstevens/postfix/epel-postfix.repo && \
-    yum -y install postfix
-
-RUN yum -y install rsyslog perl-DBI perl-JSON-XS perl-NetAddr-IP perl-Mail-SPF perl-Sys-Hostname-Long && \
-    yum -y install freetype* libpng* libjpeg*  amavisd-new fail2ban&& \
+    yum -y install postfix && \
+    yum -y install rsyslog perl-DBI perl-JSON-XS perl-NetAddr-IP perl-Mail-SPF perl-Sys-Hostname-Long && \
+    yum -y install freetype* libpng* libjpeg*  amavisd-new fail2ban && \
     yum clean all
 
 # 反垃圾邮件设置
@@ -91,7 +87,7 @@ RUN groupadd -g 5000 vmail && \
     mkdir -p /ewomail/mysql/data && \    
     chown -R mysql:mysql /ewomail/mysql/data
 
-ADD docker/base/init_sql.php                  /home/
+ADD docker/base/init_sql.php          /home/
 ADD docker/base/update_file.php       /home/
 ADD docker/base/entrypoint.sh         /home/
 RUN chmod -R 700 /home/init_sql.php && \
@@ -103,10 +99,9 @@ ENV MYSQL_ROOT_PASSWORD=mysql \
     URL='*:8080' \
     WEBMAIL_URL='*'
 
-EXPOSE 25 109 110 143 465 587 993 995 80
+EXPOSE 25 109 110 143 465 587 993 995 80 8080
 
-VOLUME ["/ewomail/mysql/data"]
-VOLUME ["/ewomail/mail"]
+VOLUME ["/ewomail/mysql/data","/ewomail/mail"]
 
 ENTRYPOINT ["/home/entrypoint.sh"]
 
