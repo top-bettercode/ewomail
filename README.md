@@ -4,13 +4,6 @@
 
 EwoMail-Admin版本为1.05
 
-### 生成docker image
-cd 到ewomail项目目录，执行
-```
-./build-docker-images.sh
-```
-会生成名为**bestwu/ewomailserver**的镜像。
-
 ### 运行docker
 
 mail.ewomail.com 换成自己的域名

@@ -1,1 +1,1 @@
-docker build -t ewomailserver .
+docker build -t bestwu/ewomailserver .
