@@ -37,7 +37,7 @@ docker-compose方式
 或
 
 ```cmd
-docker run  -d -h mail.ewomail.com --restart=always -p 25:25 -p 109:109 -p 110:110 -p 143:143 -p 465:465 -p 587:587 -p 993:993 -p 995:995  -p 80:80 -p 8080:8080 -v /home/EwoMail/data/mysql/:/ewomail/mysql/data/ -v /home/EwoMail/data/vmail/:/ewomail/mail/ -v /home/EwoMail/ssl/certs/:/etc/ssl/certs/ -v /home/EwoMail/ssl/private/:/etc/ssl/private/ --name ewomail bestwu/ewomailserver
+docker run  -d -h mail.ewomail.com --restart=always -p 25:25 -p 109:109 -p 110:110 -p 143:143 -p 465:465 -p 587:587 -p 993:993 -p 995:995  -p 80:80 -p 8080:8080 -v `pwd`/mysql/:/ewomail/mysql/data/ -v `pwd`/vmail/:/ewomail/mail/ -v `pwd`/ssl/certs/:/etc/ssl/certs/ -v `pwd`/ssl/private/:/etc/ssl/private/ --name ewomail bestwu/ewomailserver
 
 ```
 
