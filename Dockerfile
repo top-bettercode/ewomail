@@ -69,7 +69,18 @@ RUN chmod 755 /usr/local/dovecot/share/doc/dovecot/mkcert.sh && \
     mkdir -p /ewomail/dkim && \
     chown -R amavis:amavis /ewomail/dkim && \
     amavisd genrsa /ewomail/dkim/mail.pem && \
-    chown -R amavis:amavis /ewomail/dkim
+    chown -R amavis:amavis /ewomail/dkim && \
+    echo "\$signed_header_fields{'received'} = 0;" >> /etc/amavisd/amavisd.conf && \
+    echo "\$signed_header_fields{'to'} = 1;" >> /etc/amavisd/amavisd.conf && \
+    echo "\$originating = 1;" >> /etc/amavisd/amavisd.conf && \
+    echo "" >> /etc/amavisd/amavisd.conf && \
+    echo "# Add dkim_key here." >> /etc/amavisd/amavisd.conf && \
+    echo 'dkim_key("$mydomain", "dkim", "/ewomail/dkim/mail.pem");' >> /etc/amavisd/amavisd.conf && \
+    echo "" >> /etc/amavisd/amavisd.conf && \
+    echo "@dkim_signature_options_bysender_maps = ({" >> /etc/amavisd/amavisd.conf && \
+    echo "# catchall defaults" >> /etc/amavisd/amavisd.conf && \
+    echo "'.' => {c => 'relaxed/simple', ttl => 30*24*3600 }," >> /etc/amavisd/amavisd.conf && \
+    echo "} );"  >> /etc/amavisd/amavisd.conf
 
 # 拷贝admin和rainloop
 ADD ewomail-admin/      /ewomail/www/ewomail-admin

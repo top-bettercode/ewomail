@@ -154,7 +154,9 @@ class update_file{
                 return $line;
             }
 
-            if(preg_match('/^\\$mydomain/',$line)){
+            if(preg_match('/dkim_key\\("\\$mydomain"/',$line)){
+                $c = "dkim_key(\"{$this->domain}\", \"dkim\", \"/ewomail/dkim/mail.pem\");\n";
+            }else if(preg_match('/^\\$mydomain/',$line)){
                 $c = "\$mydomain = '{$this->domain}';\n";
             }else if(preg_match('/\\$myhostname/',$line)){
                 $c = "\$myhostname = 'mail.{$this->domain}';\n";
@@ -167,20 +169,6 @@ class update_file{
             }
             return $c;
         });
-        
-        $amavisd_str = file_get_contents($amavisd_conf);
-        $amavisd_out = '$signed_header_fields{\'received\'} = 0;
-$signed_header_fields{\'to\'} = 1;
-$originating = 1;
-                        
-# Add dkim_key here.
-dkim_key("'.$this->domain.'", "dkim", "/ewomail/dkim/mail.pem");
-                        
-@dkim_signature_options_bysender_maps = ({
-# catchall defaults
-\'.\' => {c => \'relaxed/simple\', ttl => 30*24*3600 },
-} );';
-        file_put_contents($amavisd_conf,$amavisd_str."\n".$amavisd_out);
         
         $postfix_conf = "/etc/postfix/main.cf";
         $this->op_file($postfix_conf,function($line){

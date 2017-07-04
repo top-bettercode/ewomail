@@ -3,6 +3,7 @@
 [EwoMail 官方文档](http://doc.ewomail.com/ewomail/285649)
 
 EwoMail-Admin版本为1.05
+rainloop 版本为1.11.1
 
 ### 运行docker
 
@@ -30,6 +31,7 @@ docker-compose方式
     volumes:
       - ./mysql:/ewomail/mysql/data
       - ./vmail:/ewomail/mail
+      - ./rainloop:/ewomail/www/rainloop/data
       - ./ssl/certs/:/etc/ssl/certs/
       - ./ssl/private/:/etc/ssl/private/
 ```
@@ -37,7 +39,7 @@ docker-compose方式
 或
 
 ```cmd
-docker run  -d -h mail.ewomail.com --restart=always -p 25:25 -p 109:109 -p 110:110 -p 143:143 -p 465:465 -p 587:587 -p 993:993 -p 995:995  -p 80:80 -p 8080:8080 -v `pwd`/mysql/:/ewomail/mysql/data/ -v `pwd`/vmail/:/ewomail/mail/ -v `pwd`/ssl/certs/:/etc/ssl/certs/ -v `pwd`/ssl/private/:/etc/ssl/private/ --name ewomail bestwu/ewomailserver
+docker run  -d -h mail.ewomail.com --restart=always -p 25:25 -p 109:109 -p 110:110 -p 143:143 -p 465:465 -p 587:587 -p 993:993 -p 995:995  -p 80:80 -p 8080:8080 -v `pwd`/mysql/:/ewomail/mysql/data/ -v `pwd`/vmail/:/ewomail/mail/ -v `pwd`/ssl/certs/:/etc/ssl/certs/ -v `pwd`/ssl/private/:/etc/ssl/private/ -v `pwd`/rainloop:/ewomail/www/rainloop/data --name ewomail bestwu/ewomailserver
 
 ```
 
@@ -64,7 +66,7 @@ docker run  -d -h mail.ewomail.com --restart=always -p 25:25 -p 109:109 -p 110:1
 
 默认用户: admin
 
-默认密码: ewomail123
+默认密码: 12345
 
 [Rainloop 用户端 http://localhost](http://localhost)
 
@@ -72,7 +74,7 @@ docker run  -d -h mail.ewomail.com --restart=always -p 25:25 -p 109:109 -p 110:1
 
 这里使用万网DNS为参考
 
-![](dns.png)
+![](https://bytebucket.org/betterwu/ewomail/raw/2973a776fb1a10515b75093381baf6f5aeb39564/dns.png)
 
 将mail.ewomail.cn 改成你的域名
 
