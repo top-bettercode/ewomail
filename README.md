@@ -3,6 +3,7 @@
 [EwoMail 官方文档](http://doc.ewomail.com/ewomail/285649)
 
 EwoMail-Admin版本为1.05
+
 rainloop 版本为1.11.1
 
 ### 运行docker
@@ -40,7 +41,7 @@ docker-compose方式
 或
 
 ```cmd
-docker run  -d -h mail.ewomail.com --restart=always -p 25:25 -p 109:109 -p 110:110 -p 143:143 -p 465:465 -p 587:587 -p 993:993 -p 995:995  -p 80:80 -p 8080:8080 -v `pwd`/mysql/:/ewomail/mysql/data/ -v `pwd`/vmail/:/ewomail/mail/ -v `pwd`/ssl/certs/:/etc/ssl/certs/ -v `pwd`/ssl/private/:/etc/ssl/private/ -v `pwd`/rainloop:/ewomail/www/rainloop/data --name ewomail bestwu/ewomailserver
+docker run  -d -h mail.ewomail.com --restart=always -p 25:25 -p 109:109 -p 110:110 -p 143:143 -p 465:465 -p 587:587 -p 993:993 -p 995:995  -p 80:80 -p 8080:8080 -v `pwd`/mysql/:/ewomail/mysql/data/ -v `pwd`/vmail/:/ewomail/mail/ -v `pwd`/ssl/certs/:/etc/ssl/certs/ -v `pwd`/ssl/private/:/etc/ssl/private/ -v `pwd`/rainloop:/ewomail/www/rainloop/data -v `pwd`/ssl/dkim/:/ewomail/dkim/ --name ewomail bestwu/ewomailserver
 
 ```
 
@@ -58,7 +59,7 @@ docker run  -d -h mail.ewomail.com --restart=always -p 25:25 -p 109:109 -p 110:1
 映射 /etc/ssl/certs/dovecot.pem，/etc/ssl/private/dovecot.pem，/ewomail/dkim/mail.pem
 
 
-运行成功后访问
+### 运行成功后访问
 
 [邮箱管理后台http://localhost:8080](http://localhost:8080)
 
