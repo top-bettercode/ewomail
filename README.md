@@ -34,6 +34,7 @@ docker-compose方式
       - ./rainloop:/ewomail/www/rainloop/data
       - ./ssl/certs/:/etc/ssl/certs/
       - ./ssl/private/:/etc/ssl/private/
+      - ./ssl/dkim/:/ewomail/dkim/
 ```
 
 或
