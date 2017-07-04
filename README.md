@@ -76,6 +76,8 @@ docker run  -d -h mail.ewomail.com --restart=always -p 25:25 -p 109:109 -p 110:1
 
 将mail.ewomail.cn 改成你的域名
 
+spf记录：v=spf1 include:ewomail.cn -all
+
 红色部分请改为你的服务器IP
 
 ### DKIM设置
