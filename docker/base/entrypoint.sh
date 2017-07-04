@@ -23,6 +23,8 @@ chown -R vmail:vmail /ewomail/mail
 chmod -R 700 /ewomail/mail
 chown -R mysql:mysql /ewomail/mysql/data
 chmod -R 700 /ewomail/mysql/data
+chown -R www:www /ewomail/www/rainloop/data
+chmod -R 770 /ewomail/www/rainloop/data
 
 if [ -d "/ewomail/mysql/data" -a ! -e "/ewomail/mail/first.runed" ]; then
     rm -rf /ewomail/mysql/data/*
