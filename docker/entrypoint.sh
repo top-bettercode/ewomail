@@ -21,6 +21,7 @@ echo "webmail_url:$WEBMAIL_URL"
 echo "title:$TITLE"
 echo "copyright:$COPYRIGHT"
 echo "icp:$ICP"
+echo "lang:$LANGUAGE"
 
 chown -R vmail:vmail /ewomail/mail
 chmod -R 700 /ewomail/mail
@@ -43,6 +44,9 @@ if [ ! -d "/ewomail/mysql/data/ewomail" -a ! -e "/ewomail/mail/first.runed" ]; t
         sed -i "s/Copyright.*版权所有/$COPYRIGHT/" /ewomail/www/ewomail-admin/upload/install.sql
         sed -i "s/ICP证.*号/$ICP/" /ewomail/www/ewomail-admin/upload/install.sql
         sed -i "s/ewomail\\.com/$TITLE/" /ewomail/www/ewomail-admin/upload/install.sql
+        lang=`echo $LANGUAGE | tr [:upper:] [:lower:]  | tr _ -`
+        echo "lang:$lang"
+        sed -i "s/zh-cn/$lang/" /ewomail/www/ewomail-admin/upload/install.sql
 
 
         /home/init_sql.php "$domain" "$MYSQL_ROOT_PASSWORD" "$MYSQL_MAIL_PASSWORD"
@@ -56,9 +60,11 @@ if [ ! -d "/ewomail/mysql/data/ewomail" -a ! -e "/ewomail/mail/first.runed" ]; t
         mv /ewomail/www/rainloop_data_ /ewomail/www/rainloop/data/_data_
         sed -i "s/SetDefaultValue('123456')/SetDefaultValue('$MYSQL_MAIL_PASSWORD')/" /ewomail/www/rainloop/data/_data_/_default_/plugins/change-password-mysql/index.php
         sed -i "s/\$mydomain/$domain/" /ewomail/www/rainloop/data/_data_/_default_/plugins/change-password-mysql/index.php
+
+        echo "lang:$LANGUAGE"
         sed -i "s/\$mydomain/$domain/" /ewomail/www/rainloop/data/_data_/_default_/configs/application.ini
         sed -i "s/title = \"ewomail\\.com\"/title = \"$TITLE\"/" /ewomail/www/rainloop/data/_data_/_default_/configs/application.ini
-        sed -i "s/custom_server_signature = \"RainLoop\"/custom_server_signature = \"$TITLE\"/" /ewomail/www/rainloop/data/_data_/_default_/configs/application.ini
+        sed -i "s/zh_CN/$LANGUAGE/" /ewomail/www/rainloop/data/_data_/_default_/configs/application.ini
         sed -i "s/loading_description = \"ewomail\\.com\"/loading_description = \"$TITLE\"/" /ewomail/www/rainloop/data/_data_/_default_/configs/application.ini
 
         mkdir /ewomail/www/rainloop/data/_data_/_default_/domains

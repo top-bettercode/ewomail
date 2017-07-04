@@ -97,9 +97,9 @@ RUN groupadd -g 5000 vmail && \
     mkdir -p /ewomail/mysql/data && \    
     chown -R mysql:mysql /ewomail/mysql/data
 
-ADD docker/base/init_sql.php          /home/
-ADD docker/base/update_file.php       /home/
-ADD docker/base/entrypoint.sh         /home/
+ADD docker/init_sql.php          /home/
+ADD docker/update_file.php       /home/
+ADD docker/entrypoint.sh         /home/
 RUN chmod -R 700 /home/init_sql.php && \
     chmod -R 700 /home/update_file.php && \
     chmod -R 700 /home/entrypoint.sh
@@ -110,7 +110,8 @@ ENV MYSQL_ROOT_PASSWORD=mysql \
     WEBMAIL_URL='*' \
     TITLE='ewomail.com' \
     COPYRIGHT='Copyright © 2016-2017 | ewomail.com 版权所有' \
-    ICP='ICP证：粤ICP备**********号'
+    ICP='ICP证：粤ICP备**********号' \
+    LANGUAGE='zh_CN'
 
 EXPOSE 25 109 110 143 465 587 993 995 80 8080
 

@@ -54,6 +54,7 @@ docker run  -d -h mail.ewomail.com --restart=always -p 25:25 -p 109:109 -p 110:1
 * TITLE 用户邮统标题
 * COPYRIGHT 邮箱管理后台网站版权
 * ICP 邮箱管理后台网站备案号
+* LANGUAGE 语言选择，默认:zh_CN
 
 ### 自定义证书
 映射 /etc/ssl/certs/dovecot.pem，/etc/ssl/private/dovecot.pem，/ewomail/dkim/mail.pem
