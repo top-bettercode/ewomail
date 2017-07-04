@@ -85,6 +85,7 @@ RUN chmod 755 /usr/local/dovecot/share/doc/dovecot/mkcert.sh && \
 # 拷贝admin和rainloop
 ADD ewomail-admin/      /ewomail/www/ewomail-admin
 ADD rainloop/           /ewomail/www/rainloop
+ADD install/config/rainloop/_data_/           /ewomail/www/rainloop_data_
 # ADD  install/soft/phpMyAdmin.tar.gz  /ewomail/www/
 
 RUN groupadd -g 5000 vmail && \
@@ -106,7 +107,10 @@ RUN chmod -R 700 /home/init_sql.php && \
 ENV MYSQL_ROOT_PASSWORD=mysql \
     MYSQL_MAIL_PASSWORD=123456 \
     URL='*:8080' \
-    WEBMAIL_URL='*'
+    WEBMAIL_URL='*' \
+    TITLE='ewomail.com' \
+    COPYRIGHT='Copyright © 2016-2017 | ewomail.com 版权所有' \
+    ICP='ICP证：粤ICP备**********号'
 
 EXPOSE 25 109 110 143 465 587 993 995 80 8080
 

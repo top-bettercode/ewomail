@@ -50,6 +50,9 @@ docker run  -d -h mail.ewomail.com --restart=always -p 25:25 -p 109:109 -p 110:1
 * MYSQL_MAIL_PASSWORD mysql数据库ewomail密码，默认：123456
 * URL 网站链接，后面不要加/线
 * WEBMAIL_URL 邮件系统链接，后面不要加/线
+* TITLE 用户邮统标题
+* COPYRIGHT 邮箱管理后台网站版权
+* ICP 邮箱管理后台网站备案号
 
 ### 自定义证书
 映射 /etc/ssl/certs/dovecot.pem，/etc/ssl/private/dovecot.pem，/ewomail/dkim/mail.pem
