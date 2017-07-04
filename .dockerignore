@@ -1,1 +1,7 @@
 install/soft/phpMyAdmin.tar.gz
+.idea
+install/start.sh
+.gitignore
+build-docker-image.sh
+dns.png
+README.md
