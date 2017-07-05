@@ -1,6 +1,6 @@
 <?php
 
-class ChangePasswordMysqlPlugin extends \RainLoop\Plugins\AbstractPlugin
+class EwomailChangePasswordPlugin extends \RainLoop\Plugins\AbstractPlugin
 {
 	public function Init()
 	{
@@ -37,8 +37,8 @@ class ChangePasswordMysqlPlugin extends \RainLoop\Plugins\AbstractPlugin
 						->SetmPass($this->Config()->Get('plugin', 'mPass', '123456'))
 						->SetmDatabase($this->Config()->Get('plugin', 'mDatabase', 'ewomail'))
 						->SetmTable($this->Config()->Get('plugin', 'mTable', 'i_users'))
-						->SetmColumn($this->Config()->Get('plugin', 'mColumn', 'email'))
-						->SetidColumn($this->Config()->Get('plugin', 'idColumn', 'password'))
+						->SetmColumn($this->Config()->Get('plugin', 'mColumn', 'password'))
+						->SetidColumn($this->Config()->Get('plugin', 'idColumn', 'email'))
 				;
 				
 				break;
