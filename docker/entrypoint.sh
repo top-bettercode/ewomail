@@ -58,7 +58,7 @@ if [ ! -d "/ewomail/mysql/data/ewomail" -a ! -e "/ewomail/mail/first.runed" ]; t
 
 #        初始化rainloop配置文件
         mv /ewomail/www/rainloop_data_ /ewomail/www/rainloop/data/_data_
-        sed -i "s/SetDefaultValue('123456')/SetDefaultValue('$MYSQL_MAIL_PASSWORD')/" /ewomail/www/rainloop/data/_data_/_default_/plugins/change-password-mysql/index.php
+        sed -i "s/'123456'/'$MYSQL_MAIL_PASSWORD'/" /ewomail/www/rainloop/data/_data_/_default_/plugins/change-password-mysql/index.php
         sed -i "s/\$mydomain/$domain/" /ewomail/www/rainloop/data/_data_/_default_/plugins/change-password-mysql/index.php
 
         echo "lang:$LANGUAGE"

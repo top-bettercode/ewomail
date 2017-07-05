@@ -102,7 +102,8 @@ ADD docker/update_file.php       /home/
 ADD docker/entrypoint.sh         /home/
 RUN chmod -R 700 /home/init_sql.php && \
     chmod -R 700 /home/update_file.php && \
-    chmod -R 700 /home/entrypoint.sh
+    chmod -R 700 /home/entrypoint.sh && \
+    rm -rf /ewomail/nginx
 
 ENV MYSQL_ROOT_PASSWORD=mysql \
     MYSQL_MAIL_PASSWORD=123456 \

@@ -1,6 +1,6 @@
 <?php
 
-class ChangePasswordMysqlDriver implements \RainLoop\Providers\ChangePassword\ChangePasswordInterface
+class EwomailChangePasswordDriver implements \RainLoop\Providers\ChangePassword\ChangePasswordInterface
 {
 	/**
 	 * @var string
@@ -49,7 +49,7 @@ class ChangePasswordMysqlDriver implements \RainLoop\Providers\ChangePassword\Ch
 	/**
 	 * @param string $mHost
 	 *
-	 * @return \ChangePasswordMysqlDriver
+	 * @return \EwomailChangePasswordDriver
 	 */
 	public function SetmHost($mHost)
 	{
@@ -60,7 +60,7 @@ class ChangePasswordMysqlDriver implements \RainLoop\Providers\ChangePassword\Ch
 	/**
 	 * @param string $mUser
 	 *
-	 * @return \ChangePasswordMysqlDriver
+	 * @return \EwomailChangePasswordDriver
 	 */
 	public function SetmUser($mUser)
 	{
@@ -71,7 +71,7 @@ class ChangePasswordMysqlDriver implements \RainLoop\Providers\ChangePassword\Ch
 	/**
 	 * @param string $mPass
 	 *
-	 * @return \ChangePasswordMysqlDriver
+	 * @return \EwomailChangePasswordDriver
 	 */
 	public function SetmPass($mPass)
 	{
@@ -82,7 +82,7 @@ class ChangePasswordMysqlDriver implements \RainLoop\Providers\ChangePassword\Ch
 	/**
 	 * @param string $mDatabase
 	 *
-	 * @return \ChangePasswordMysqlDriver
+	 * @return \EwomailChangePasswordDriver
 	 */
 	public function SetmDatabase($mDatabase)
 	{
@@ -93,7 +93,7 @@ class ChangePasswordMysqlDriver implements \RainLoop\Providers\ChangePassword\Ch
 	/**
 	 * @param string $mTable
 	 *
-	 * @return \ChangePasswordMysqlDriver
+	 * @return \EwomailChangePasswordDriver
 	 */
 	public function SetmTable($mTable)
 	{
@@ -103,7 +103,7 @@ class ChangePasswordMysqlDriver implements \RainLoop\Providers\ChangePassword\Ch
 	/**
 	 * @param string $idColumn
 	 *
-	 * @return \ChangePasswordMysqlDriver
+	 * @return \EwomailChangePasswordDriver
 	 */
 	public function SetidColumn($idColumn)
 	{
@@ -114,7 +114,7 @@ class ChangePasswordMysqlDriver implements \RainLoop\Providers\ChangePassword\Ch
 	/**
 	 * @param string $mColumn
 	 *
-	 * @return \ChangePasswordMysqlDriver
+	 * @return \EwomailChangePasswordDriver
 	 */
 	public function SetmColumn($mColumn)
 	{
@@ -125,7 +125,7 @@ class ChangePasswordMysqlDriver implements \RainLoop\Providers\ChangePassword\Ch
 	/**
 	 * @param \MailSo\Log\Logger $oLogger
 	 *
-	 * @return \ChangePasswordMysqlDriver
+	 * @return \EwomailChangePasswordDriver
 	 */
 	public function SetLogger($oLogger)
 	{
