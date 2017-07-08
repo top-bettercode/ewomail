@@ -116,7 +116,7 @@ ENV MYSQL_ROOT_PASSWORD=mysql \
 
 EXPOSE 25 109 110 143 465 587 993 995 80 8080
 
-VOLUME ["/ewomail/mysql/data","/ewomail/mail"]
+VOLUME ["/ewomail/mysql/data","/ewomail/mail","/ewomail/www/rainloop/data"]
 
 ENTRYPOINT ["/home/entrypoint.sh"]
 
