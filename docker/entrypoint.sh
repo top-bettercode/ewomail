@@ -38,6 +38,34 @@ fi
 service mysqld start
 
 /home/update_file.php "$domain" "$MYSQL_ROOT_PASSWORD" "$MYSQL_MAIL_PASSWORD" "$URL" "$WEBMAIL_URL"
+sed -i "s/\$mydomain/$domain/" /etc/monit/monit.d/server.cfg
+echo -e "
+allow $MONIT_USER:$MONIT_PASSWORD # web登录的用户名和密码
+"  >> /etc/monit/monitrc
+
+        if [ -n "$MONIT_MAILSERVER" -a -n "$MONIT_MAIL_USER" -a -n "$MONIT_MAIL_PASSWORD" -a -n "$MONIT_MAIL_ALERT" ];then
+        echo -e "
+
+# 邮箱设置
+set mailserver $MONIT_MAILSERVER port $MONIT_MAIL_PORT
+username \"$MONIT_MAIL_USER\" password \"$MONIT_MAIL_PASSWORD\"
+# using ssl
+set alert $MONIT_MAIL_ALERT
+
+set mail-format {
+from: $MONIT_MAIL_USER
+subject: [\$SERVICE] \$EVENT
+message:
+[\$SERVICE] \$EVENT
+
+Date: \$DATE
+Action: \$ACTION
+Host: \$HOST
+Description: \$DESCRIPTION
+
+Your faithful employee,
+Monit }"  >> /etc/monit/monitrc
+fi
 if [ ! -d "/ewomail/mysql/data/ewomail" -a ! -e "/ewomail/mail/first.runed" ]; then
 
 #      初始化ewomail数据
@@ -68,7 +96,22 @@ if [ ! -d "/ewomail/mysql/data/ewomail" -a ! -e "/ewomail/mail/first.runed" ]; t
         sed -i "s/loading_description = \"ewomail\\.com\"/loading_description = \"$TITLE\"/" /ewomail/www/rainloop/data/_data_/_default_/configs/application.ini
 
         mkdir /ewomail/www/rainloop/data/_data_/_default_/domains
-        echo -e 'imap_host = "127.0.0.1"\nimap_port = 143\nimap_secure = "TLS"\nimap_short_login = Off\nsieve_use = Off\nsieve_allow_raw = Off\nsieve_host = ""\nsieve_port = 4190\nsieve_secure = "None"\nsmtp_host = "127.0.0.1"\nsmtp_port = 587\nsmtp_secure = "TLS"\nsmtp_short_login = Off\nsmtp_auth = On\nsmtp_php_mail = Off\nwhite_list = ""' > /ewomail/www/rainloop/data/_data_/_default_/domains/$domain.ini
+        echo -e 'imap_host = "127.0.0.1"
+imap_port = 143
+imap_secure = "TLS"
+imap_short_login = Off
+sieve_use = Off
+sieve_allow_raw = Off
+sieve_host = ""
+sieve_port = 4190
+sieve_secure = "None"
+smtp_host = "127.0.0.1"
+smtp_port = 587
+smtp_secure = "TLS"
+smtp_short_login = Off
+smtp_auth = On
+smtp_php_mail = Off
+white_list = ""' > /ewomail/www/rainloop/data/_data_/_default_/domains/$domain.ini
 
         touch /ewomail/mail/first.runed
 fi
@@ -84,5 +127,7 @@ service dovecot start
 service httpd start
 service postfix start
 service fail2ban start
+
+monit -c /etc/monit/monitrc
 
 tail -fn 0 /var/log/maillog

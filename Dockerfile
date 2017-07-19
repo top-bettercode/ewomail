@@ -13,7 +13,7 @@ RUN yum -y install wget && \
     wget -P /etc/yum.repos.d https://repos.fedorapeople.org/repos/mstevens/postfix/epel-postfix.repo && \
     yum -y install postfix && \
     yum -y install rsyslog perl-DBI perl-JSON-XS perl-NetAddr-IP perl-Mail-SPF perl-Sys-Hostname-Long && \
-    yum -y install freetype* libpng* libjpeg*  amavisd-new fail2ban && \
+    yum -y install freetype* libpng* libjpeg*  amavisd-new fail2ban monit && \
     yum clean all
 
 # 反垃圾邮件设置
@@ -35,6 +35,7 @@ RUN chmod -R 755 /usr/libexec/postfix/postfix-policyd-spf-perl
 RUN rm -rf /home/*.rpm
 
 # 添加配置文件
+ADD install/config/monit    /etc/monit
 ADD install/config/dovecot    /etc/dovecot
 ADD install/config/postfix    /etc/postfix
 ADD install/soft/httpd.init   /etc/rc.d/init.d/httpd
@@ -53,6 +54,7 @@ RUN sed -i 's/\r$//' /etc/rc.d/init.d/httpd && \
     sed -i 's/\r$//' /etc/rc.d/init.d/dovecot
 
 RUN ln -s /etc/amavisd/amavisd.conf /etc && \
+    chmod -R 700 /etc/monit && \
     mv /etc/clamd.conf /etc/clamd.conf.backup && \
     cp -rf /etc/clamd.d/amavisd.conf /etc/clamd.conf  && \
     mkdir -p /etc/ssl/certs && \
@@ -112,9 +114,16 @@ ENV MYSQL_ROOT_PASSWORD=mysql \
     TITLE='ewomail.com' \
     COPYRIGHT='Copyright © 2016-2017 | ewomail.com 版权所有' \
     ICP='ICP证：粤ICP备**********号' \
-    LANGUAGE='zh_CN'
+    LANGUAGE='zh_CN' \
+    MONIT_MAILSERVER='' \
+    MONIT_MAIL_PORT='25' \
+    MONIT_MAIL_USER='' \
+    MONIT_MAIL_PASSWORD='' \
+    MONIT_MAIL_ALERT='' \
+    MONIT_USER='admin' \
+    MONIT_PASSWORD='monit'
 
-EXPOSE 25 109 110 143 465 587 993 995 80 8080
+EXPOSE 25 109 110 143 465 587 993 995 80 8080 2812
 
 VOLUME ["/ewomail/mysql/data","/ewomail/mail","/ewomail/www/rainloop/data"]
 

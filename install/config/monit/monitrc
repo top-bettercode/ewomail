@@ -1,0 +1,14 @@
+## Global section
+set daemon 30
+
+set logfile syslog
+
+## Includes
+include /etc/monit/monit.d/*
+
+# 设置web服务认证
+set httpd port 2812 and
+# ssl enable
+# pemfile /etc/certs/monit.pem
+# use address all # only accept connection from localhost
+# allow 127.0.0.1 # 允许localhost连接
