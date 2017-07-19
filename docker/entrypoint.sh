@@ -30,16 +30,20 @@ chmod -R 700 /ewomail/mysql/data
 chown -R www:www /ewomail/www/rainloop/data
 chmod -R 770 /ewomail/www/rainloop/data
 
-if [ -d "/ewomail/mysql/data" -a ! -e "/ewomail/mail/first.runed" ]; then
+if [ -d "/ewomail/mysql/data" -a ! -e "/ewomail/mysql/data/first.runed" ]; then
+    echo '初始化数据库'
     rm -rf /ewomail/mysql/data/*
     /ewomail/mysql/scripts/mysql_install_db --user=mysql --datadir=/ewomail/mysql/data --basedir=/ewomail/mysql
+    touch /ewomail/mysql/data/first.runed
 fi
 
 service mysqld start
 
-/home/update_file.php "$domain" "$MYSQL_ROOT_PASSWORD" "$MYSQL_MAIL_PASSWORD" "$URL" "$WEBMAIL_URL"
-sed -i "s/\$mydomain/$domain/" /etc/monit/monit.d/server.cfg
-echo -e "
+if [ ! -e "/etc/first.runed" ]; then
+    echo '初始配置'
+    /home/update_file.php "$domain" "$MYSQL_ROOT_PASSWORD" "$MYSQL_MAIL_PASSWORD" "$URL" "$WEBMAIL_URL"
+    sed -i "s/\$mydomain/$domain/" /etc/monit/monit.d/server.cfg
+    echo -e "
 allow $MONIT_USER:$MONIT_PASSWORD # web登录的用户名和密码
 "  >> /etc/monit/monitrc
 
@@ -65,38 +69,50 @@ Description: \$DESCRIPTION
 
 Your faithful employee,
 Monit }"  >> /etc/monit/monitrc
+    fi
+    touch /etc/first.runed
 fi
-if [ ! -d "/ewomail/mysql/data/ewomail" -a ! -e "/ewomail/mail/first.runed" ]; then
 
 #      初始化ewomail数据
-        sed -i "s/Copyright.*版权所有/$COPYRIGHT/" /ewomail/www/ewomail-admin/upload/install.sql
-        sed -i "s/ICP证.*号/$ICP/" /ewomail/www/ewomail-admin/upload/install.sql
-        sed -i "s/ewomail\\.com/$TITLE/" /ewomail/www/ewomail-admin/upload/install.sql
-        lang=`echo $LANGUAGE | tr [:upper:] [:lower:]  | tr _ -`
-        echo "lang:$lang"
-        sed -i "s/zh-cn/$lang/" /ewomail/www/ewomail-admin/upload/install.sql
+if [ ! -d "/ewomail/mysql/data/ewomail" ]; then
+    echo '初始化ewomail数据'
+    sed -i "s/Copyright.*版权所有/$COPYRIGHT/" /ewomail/www/ewomail-admin/upload/install.sql
+    sed -i "s/ICP证.*号/$ICP/" /ewomail/www/ewomail-admin/upload/install.sql
+    sed -i "s/ewomail\\.com/$TITLE/" /ewomail/www/ewomail-admin/upload/install.sql
+    lang=`echo $LANGUAGE | tr [:upper:] [:lower:]  | tr _ -`
+    echo "lang:$lang"
+    sed -i "s/zh-cn/$lang/" /ewomail/www/ewomail-admin/upload/install.sql
 
+    /home/init_sql.php "$domain" "$MYSQL_ROOT_PASSWORD" "$MYSQL_MAIL_PASSWORD"
+fi
 
-        /home/init_sql.php "$domain" "$MYSQL_ROOT_PASSWORD" "$MYSQL_MAIL_PASSWORD"
+if [ ! -e "/etc/ssl/certs/dovecot.pem" -o ! -e "/etc/ssl/private/dovecot.pem" ]; then
+    echo '生成dovecot.pem'
+    rm -f /etc/ssl/certs/dovecot.pem /etc/ssl/private/dovecot.pem
+    cd /usr/local/dovecot/share/doc/dovecot/ && sh mkcert.sh
+fi
 
-        if [ ! -d "/etc/ssl/certs/dovecot.pem" -a ! -e "/etc/ssl/private/dovecot.pem" ]; then
-          rm -f /etc/ssl/certs/dovecot.pem /etc/ssl/private/dovecot.pem
-          cd /usr/local/dovecot/share/doc/dovecot/ && sh mkcert.sh
-        fi
+if [ ! -e "/ewomail/dkim/mail.pem" ]; then
+    echo '生成 dkim mail.pem'
+    amavisd genrsa /ewomail/dkim/mail.pem
+fi
+
 
 #        初始化rainloop配置文件
-        mv /ewomail/www/rainloop_data_ /ewomail/www/rainloop/data/_data_
-        sed -i "s/'123456'/'$MYSQL_MAIL_PASSWORD'/" /ewomail/www/rainloop/data/_data_/_default_/plugins/ewomail-change-password/index.php
-        sed -i "s/\$mydomain/$domain/" /ewomail/www/rainloop/data/_data_/_default_/plugins/ewomail-change-password/index.php
+if [ ! -d "/ewomail/www/rainloop/data/_data_" ]; then
+    echo '初始化rainloop配置文件'
+    mv /ewomail/www/rainloop_data_ /ewomail/www/rainloop/data/_data_
+    sed -i "s/'123456'/'$MYSQL_MAIL_PASSWORD'/" /ewomail/www/rainloop/data/_data_/_default_/plugins/ewomail-change-password/index.php
+    sed -i "s/\$mydomain/$domain/" /ewomail/www/rainloop/data/_data_/_default_/plugins/ewomail-change-password/index.php
 
-        echo "lang:$LANGUAGE"
-        sed -i "s/\$mydomain/$domain/" /ewomail/www/rainloop/data/_data_/_default_/configs/application.ini
-        sed -i "s/title = \"ewomail\\.com\"/title = \"$TITLE\"/" /ewomail/www/rainloop/data/_data_/_default_/configs/application.ini
-        sed -i "s/zh_CN/$LANGUAGE/" /ewomail/www/rainloop/data/_data_/_default_/configs/application.ini
-        sed -i "s/loading_description = \"ewomail\\.com\"/loading_description = \"$TITLE\"/" /ewomail/www/rainloop/data/_data_/_default_/configs/application.ini
+    echo "lang:$LANGUAGE"
+    sed -i "s/\$mydomain/$domain/" /ewomail/www/rainloop/data/_data_/_default_/configs/application.ini
+    sed -i "s/title = \"ewomail\\.com\"/title = \"$TITLE\"/" /ewomail/www/rainloop/data/_data_/_default_/configs/application.ini
+    sed -i "s/zh_CN/$LANGUAGE/" /ewomail/www/rainloop/data/_data_/_default_/configs/application.ini
+    sed -i "s/loading_description = \"ewomail\\.com\"/loading_description = \"$TITLE\"/" /ewomail/www/rainloop/data/_data_/_default_/configs/application.ini
 
-        mkdir /ewomail/www/rainloop/data/_data_/_default_/domains
-        echo -e 'imap_host = "127.0.0.1"
+    mkdir /ewomail/www/rainloop/data/_data_/_default_/domains
+    echo -e 'imap_host = "127.0.0.1"
 imap_port = 143
 imap_secure = "TLS"
 imap_short_login = Off
@@ -113,7 +129,6 @@ smtp_auth = On
 smtp_php_mail = Off
 white_list = ""' > /ewomail/www/rainloop/data/_data_/_default_/domains/$domain.ini
 
-        touch /ewomail/mail/first.runed
 fi
 
 echo ""
