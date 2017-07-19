@@ -141,7 +141,6 @@ service amavisd start
 service dovecot start
 service httpd start
 service postfix start
-service fail2ban start
 
 monit -c /etc/monit/monitrc
 

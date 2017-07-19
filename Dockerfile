@@ -13,7 +13,8 @@ RUN yum -y install wget && \
     wget -P /etc/yum.repos.d https://repos.fedorapeople.org/repos/mstevens/postfix/epel-postfix.repo && \
     yum -y install postfix && \
     yum -y install rsyslog perl-DBI perl-JSON-XS perl-NetAddr-IP perl-Mail-SPF perl-Sys-Hostname-Long && \
-    yum -y install freetype* libpng* libjpeg*  amavisd-new fail2ban monit && \
+    yum -y install freetype* libpng* libjpeg* amavisd-new monit && \
+    rpm --rebuilddb && \
     yum clean all
 
 # 反垃圾邮件设置
@@ -45,8 +46,6 @@ ADD install/soft/php-cli.ini  /ewomail/php54/etc/
 ADD install/soft/dovecot.init /etc/rc.d/init.d/dovecot
 ADD install/config/mail/*     /ewomail/mail/
 ADD install/soft/php-fpm.init /etc/rc.d/init.d/php-fpm
-ADD install/config/fail2ban/jail.local /etc/fail2ban
-ADD install/config/fail2ban/postfix.ewomail.conf /etc/fail2ban/filter.d
 ADD install/soft/nginx.init /etc/rc.d/init.d/nginx
 
 # 清理换行
