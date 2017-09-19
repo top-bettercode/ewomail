@@ -1,5 +1,5 @@
 FROM centos:6
-MAINTAINER Peter Wu <piterwu@outlook.com>
+LABEL maintainer='Peter Wu <piterwu@outlook.com>'
 
 # 设置时区
 ENV TZ="Asia/Shanghai" \
