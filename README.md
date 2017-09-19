@@ -97,7 +97,7 @@ docker run  -d -h mail.ewomail.com --restart=always \
 
 这里使用万网DNS为参考
 
-![](https://bytebucket.org/betterwu/ewomail/raw/2973a776fb1a10515b75093381baf6f5aeb39564/dns.png)
+![](https://github.com/bestwu/ewomail/blob/mydocker/dns.png?raw=true)
 
 将mail.ewomail.cn 改成你的域名
 
