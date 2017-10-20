@@ -1,4 +1,6 @@
-### [EwoMail 开源企业邮件系统](http://www.ewomail.com/) 的docker镜像
+[![Docker Image](https://img.shields.io/badge/docker%20image-available-green.svg)](https://hub.docker.com/r/bestwu/ewomailserver/)
+
+## [EwoMail 开源企业邮件系统](http://www.ewomail.com/) 的docker镜像
 
 [EwoMail 官方文档](http://doc.ewomail.com/ewomail/285649)
 
