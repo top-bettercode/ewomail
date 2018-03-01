@@ -10,6 +10,7 @@
 #!/bin/bash
 cur_dir=`pwd`
 domain=$1
+df=$2
 set -o pipefail
 stty erase ^h
 setenforce 0
@@ -144,7 +145,13 @@ init(){
     yum remove sendmail
     epel_install
     yum -y install postfix perl-DBI perl-JSON-XS perl-NetAddr-IP perl-Mail-SPF perl-Sys-Hostname-Long freetype* libpng* libjpeg* iptables fail2ban
-    rpm -ivh $cur_dir/soft/ewomail-lamp-1.0-el6.x86_64.rpm
+    
+    if [ $df = "-f" ] ; then 
+        rpm -ivh $cur_dir/soft/ewomail-lamp-1.0-el6.x86_64.rpm --force --nodeps
+    else
+        rpm -ivh $cur_dir/soft/ewomail-lamp-1.0-el6.x86_64.rpm
+    fi
+
     
     if [ $? != 0 ] ; then echo "ewomail-lamp install failed" >&2 ; exit 1 ; fi
     
