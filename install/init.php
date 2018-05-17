@@ -141,9 +141,11 @@ class init{
             }else if(preg_match("/'code_key'/",$line)){
                 $c = preg_replace("/'code_key'.+/","'code_key' => '".$this->create_password()."',",$line);
             }else if(preg_match("/'url'/",$line)){
-                $c = preg_replace("/'url'.+/","'url' => '*:8010',",$line);
+                $url = "http://mail.".$this->domain.":8010";
+                $c = preg_replace("/'url'.+/","'url' => '$url',",$line);
             }else if(preg_match("/'webmail_url'/",$line)){
-                $c = preg_replace("/'webmail_url'.+/","'webmail_url' => '*:8000',",$line);
+                $url = "http://mail.".$this->domain.":8000";
+                $c = preg_replace("/'webmail_url'.+/","'webmail_url' => '$url',",$line);
             }else{
                 $c = $line;
             }
@@ -167,10 +169,16 @@ class init{
                 $c = "\$mydomain = '{$this->domain}';\n";
             }else if(preg_match('/\\$myhostname/',$line)){
                 $c = "\$myhostname = 'mail.{$this->domain}';\n";
+            }else if(preg_match('/\\$final_virus_destiny/',$line)){
+                $c = "#".$line;
             }else if(preg_match('/\\$final_banned_destiny/',$line)){
-                $c = "\$final_banned_destiny = D_PASS;\n";
+                //$c = "\$final_banned_destiny = D_PASS;\n";
+                $c = "#".$line;
+            }else if(preg_match('/\\$final_spam_destiny/',$line)){
+                $c = "#".$line;
             }else if(preg_match('/\\$final_bad_header_destiny/',$line)){
-                $c = "\$final_bad_header_destiny = D_PASS;\n";
+                //$c = "\$final_bad_header_destiny = D_PASS;\n";
+                $c = "#".$line;
             }else{
                 $c = $line;
             }
@@ -178,7 +186,8 @@ class init{
         });
         
         $amavisd_str = file_get_contents($amavisd_conf);
-        $amavisd_out = '$signed_header_fields{\'received\'} = 0;
+        $amavisd_out = '$inet_socket_bind = "127.0.0.1";'."\n";
+        $amavisd_out .= '$signed_header_fields{\'received\'} = 0;
 $signed_header_fields{\'to\'} = 1;
 $originating = 1;
                         
