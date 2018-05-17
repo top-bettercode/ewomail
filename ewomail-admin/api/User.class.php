@@ -78,9 +78,10 @@ class User extends App
             $name = $arr[0];
             $domain = $arr[1];
             
-            if(strlen($name)<3){
+            if(strlen($name)<2){
                 E::error(3074);
             }
+            
             
             $domainRow = App::$db->getOne("select * from ".table("domains")." where name='$domain'");
             if(!$domainRow){
@@ -121,6 +122,9 @@ class User extends App
         $str1 = substr($name,0,1);
         $str2 = substr($name,1,1);
         $str3 = substr($name,2,1);
+        if(!$str3){
+            $str3 = $str2;
+        }
         $date = new Date();
         $format = $date->format("%Y%m%d");
         $dir = C('maildir')."/vmail/$domain/$str1/$str2/$str3/$name.$format";

@@ -231,7 +231,8 @@ function E(callable $fun,&$e=null)
  * return 0 格式错误 1 格式正确
  */
 function check_email($inAddress){
-    return preg_match("/^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+\\..+$/",$inAddress);
+    return preg_match("/^[a-zA-Z0-9_\\.-]+@[a-zA-Z0-9_-]+\\..+$/",$inAddress);
+    
 }
 
 /**
