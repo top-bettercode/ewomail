@@ -50,6 +50,7 @@ zh_CN:
   FOLDER_LIST:
     BUTTON_COMPOSE: "写邮件"
     BUTTON_CONTACTS: "联系人"
+    BUTTON_NEW_MESSAGE: "写邮件"
     INBOX_NAME: "收件箱"
     SENT_NAME: "已发邮件"
     DRAFTS_NAME: "草稿"
