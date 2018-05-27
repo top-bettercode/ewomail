@@ -727,6 +727,7 @@ virtual_alias_maps = mysql:/etc/postfix/mysql/mysql-alias-maps.cf
 
 
 virtual_transport = lmtp:unix:private/dovecot-lmtp
+
 #smtp-amavis_destination_recipient_limit = 1
 
 mailbox_size_limit = 0
