@@ -41,6 +41,7 @@ amavis_install(){
         cp -rf $cur_dir/config/clamav/clamd.amavisd /etc/sysconfig
         cp -rf $cur_dir/config/clamav/clamd.amavisd.conf /etc/tmpfiles.d
         cp -rf $cur_dir/config/clamav/clamd@.service /usr/lib/systemd/system
+        freshclam
     else
         yum -y install amavisd-new
         chmod -R 770 /var/spool/amavisd/tmp
