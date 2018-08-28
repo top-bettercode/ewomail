@@ -41,6 +41,7 @@ service mysqld start
 
 if [ ! -e "/etc/first.runed" ]; then
     echo '初始配置'
+    mv /ewomail/cmail/* /ewomail/mail/
     /home/update_file.php "$domain" "$MYSQL_ROOT_PASSWORD" "$MYSQL_MAIL_PASSWORD" "$URL" "$WEBMAIL_URL"
     sed -i "s/\$mydomain/$domain/" /etc/monit/monit.d/server.cfg
     echo -e "

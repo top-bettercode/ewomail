@@ -11,7 +11,8 @@ ADD install/soft/epel-6.repo /etc/yum.repos.d/epel.repo
 # 安装软件
 RUN yum -y install postfix && \
     yum -y install rsyslog perl-DBI perl-JSON-XS perl-NetAddr-IP perl-Mail-SPF perl-Sys-Hostname-Long && \
-    yum -y install freetype* libpng* libjpeg* amavisd-new monit
+    yum -y install freetype* libpng* libjpeg* amavisd-new monit && \
+    yum clean all
 
 # 反垃圾邮件设置
 RUN chmod -R 770 /var/spool/amavisd/tmp && \
@@ -31,7 +32,7 @@ RUN chmod -R 755 /usr/libexec/postfix/postfix-policyd-spf-perl
 # 集中清理安装包
 RUN rm -rf /home/*.rpm && \
     rpm --rebuilddb && \
-    yum clean all
+    yum clean all && rm -rf /var/cache/yum
 
 # 添加配置文件
 ADD install/config/monit    /etc/monit
@@ -42,7 +43,7 @@ ADD install/soft/httpd.conf   /ewomail/apache/conf/httpd.conf
 ADD install/soft/php.ini      /ewomail/php54/etc/
 ADD install/soft/php-cli.ini  /ewomail/php54/etc/
 ADD install/soft/dovecot.init /etc/rc.d/init.d/dovecot
-ADD install/config/mail/*     /ewomail/mail/
+ADD install/config/mail/*     /ewomail/cmail/
 
 # 清理换行
 RUN sed -i 's/\r$//' /etc/rc.d/init.d/httpd && \
@@ -85,6 +86,7 @@ ADD install/config/rainloop/_data_/           /ewomail/www/rainloop_data_
 
 RUN groupadd -g 5000 vmail && \
     useradd -M -u 5000 -g vmail -s /sbin/nologin vmail && \
+    mkdir -p /ewomail/mail && \
     chown -R vmail:vmail /ewomail/mail && \
     chmod -R 700 /ewomail/mail && \    
     chown -R www:www /ewomail/www && \
