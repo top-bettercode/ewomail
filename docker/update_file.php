@@ -186,19 +186,19 @@ class update_file
         });
 
         //fail2ban
-        $fail2ban_conf = "/etc/fail2ban/fail2ban.conf";
-        $this->op_file($fail2ban_conf, function ($line) {
-            if (trim($line) == '') {
-                return $line;
-            }
-
-            if (preg_match('/^logtarget/', $line)) {
-                $c = "logtarget = /var/log/fail2ban.log\n";
-            } else {
-                $c = $line;
-            }
-            return $c;
-        });
+//        $fail2ban_conf = "/etc/fail2ban/fail2ban.conf";
+//        $this->op_file($fail2ban_conf, function ($line) {
+//            if (trim($line) == '') {
+//                return $line;
+//            }
+//
+//            if (preg_match('/^logtarget/', $line)) {
+//                $c = "logtarget = /var/log/fail2ban.log\n";
+//            } else {
+//                $c = $line;
+//            }
+//            return $c;
+//        });
 
         //apache
         $apache_conf = '/ewomail/apache/conf/extra/httpd-vhosts.conf';

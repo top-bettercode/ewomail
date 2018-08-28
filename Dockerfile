@@ -1,4 +1,4 @@
-FROM centos:6
+FROM centos:6.10
 LABEL maintainer='Peter Wu <piterwu@outlook.com>'
 
 # 设置时区
@@ -9,13 +9,9 @@ ENV TZ="Asia/Shanghai" \
 ADD install/soft/epel-6.repo /etc/yum.repos.d/epel.repo
 
 # 安装软件
-RUN yum -y install wget && \
-    wget -P /etc/yum.repos.d https://repos.fedorapeople.org/repos/mstevens/postfix/epel-postfix.repo && \
-    yum -y install postfix && \
+RUN yum -y install postfix && \
     yum -y install rsyslog perl-DBI perl-JSON-XS perl-NetAddr-IP perl-Mail-SPF perl-Sys-Hostname-Long && \
-    yum -y install freetype* libpng* libjpeg* amavisd-new monit && \
-    rpm --rebuilddb && \
-    yum clean all
+    yum -y install freetype* libpng* libjpeg* amavisd-new monit
 
 # 反垃圾邮件设置
 RUN chmod -R 770 /var/spool/amavisd/tmp && \
@@ -33,7 +29,9 @@ ADD install/soft/postfix-policyd-spf-perl /usr/libexec/postfix/
 RUN chmod -R 755 /usr/libexec/postfix/postfix-policyd-spf-perl
 
 # 集中清理安装包
-RUN rm -rf /home/*.rpm
+RUN rm -rf /home/*.rpm && \
+    rpm --rebuilddb && \
+    yum clean all
 
 # 添加配置文件
 ADD install/config/monit    /etc/monit
@@ -45,8 +43,6 @@ ADD install/soft/php.ini      /ewomail/php54/etc/
 ADD install/soft/php-cli.ini  /ewomail/php54/etc/
 ADD install/soft/dovecot.init /etc/rc.d/init.d/dovecot
 ADD install/config/mail/*     /ewomail/mail/
-ADD install/soft/php-fpm.init /etc/rc.d/init.d/php-fpm
-ADD install/soft/nginx.init /etc/rc.d/init.d/nginx
 
 # 清理换行
 RUN sed -i 's/\r$//' /etc/rc.d/init.d/httpd && \
@@ -59,9 +55,7 @@ RUN ln -s /etc/amavisd/amavisd.conf /etc && \
     mkdir -p /etc/ssl/certs && \
     mkdir -p /etc/ssl/private && \
     chmod -R 755 /etc/rc.d/init.d/httpd && \
-    chmod -R 755 /etc/rc.d/init.d/dovecot && \
-    chmod -R 755 /etc/rc.d/init.d/php-fpm && \
-    chmod -R 755 /etc/rc.d/init.d/nginx
+    chmod -R 755 /etc/rc.d/init.d/dovecot
 
 # 生成签名
 RUN chmod 755 /usr/local/dovecot/share/doc/dovecot/mkcert.sh && \

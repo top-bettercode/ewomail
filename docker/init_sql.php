@@ -138,6 +138,10 @@ class init_sql{
         $this->db->query("update i_mail_config set value='$mydomain' where name='mydomain'");
         $this->db->query("update i_mail_config set value='$myhostname' where name='myhostname'");
         $this->db->query("INSERT INTO i_domains (name,active,ctime) VALUES('$mydomain',1,NOW())");
+        $this->db->query("create database if not exists rainloop");
+        $this->db->query("create user rainloop@localhost identified by 'rainloop'");
+        $this->db->query("grant all privileges on rainloop.* to rainloop@localhost");
+        $this->db->query("flush privileges");
     }
     
 }

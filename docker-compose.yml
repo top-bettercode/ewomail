@@ -1,0 +1,30 @@
+  mail:
+    image: bestwu/ewomail:1.05
+    hostname: mail.dev.com
+    container_name: ewomail
+    restart: always
+    ports:
+      - "25:25"
+      - "143:143"
+      - "587:587"
+      - "993:993"
+      - "109:109"
+      - "110:110"
+      - "465:465"
+      - "995:995"
+      - "80:80"
+      - "2812:2812"
+      - "8080:8080"
+    environment:
+      - LANGUAGE=zh_CN
+    volumes:
+      - ./build/data/mysql:/ewomail/mysql/data
+      - ./build/data/vmail:/ewomail/mail
+      - ./build/data/rainloop:/ewomail/www/rainloop/data
+      - ./build/data/ssl/certs/:/etc/ssl/certs/
+      - ./build/data/ssl/private/:/etc/ssl/private/
+      - ./build/data/ssl/dkim/:/ewomail/dkim/
+      # - ./data/ssl/certs/dovecot.pem/:/etc/ssl/certs/dovecot.pem
+      # - ./data/ssl/private/dovecot.pem:/etc/ssl/private/dovecot.pem
+
+      

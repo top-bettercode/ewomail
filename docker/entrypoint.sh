@@ -98,7 +98,7 @@ if [ ! -e "/ewomail/dkim/mail.pem" ]; then
 fi
 
 
-#        初始化rainloop配置文件
+# 初始化rainloop配置文件
 if [ ! -d "/ewomail/www/rainloop/data/_data_" ]; then
     echo '初始化rainloop配置文件'
     mv /ewomail/www/rainloop_data_ /ewomail/www/rainloop/data/_data_
