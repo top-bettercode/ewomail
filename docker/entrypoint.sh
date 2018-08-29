@@ -23,13 +23,6 @@ echo "copyright:$COPYRIGHT"
 echo "icp:$ICP"
 echo "lang:$LANGUAGE"
 
-chown -R vmail:vmail /ewomail/mail
-chmod -R 700 /ewomail/mail
-chown -R mysql:mysql /ewomail/mysql/data
-chmod -R 700 /ewomail/mysql/data
-chown -R www:www /ewomail/www/rainloop/data
-chmod -R 770 /ewomail/www/rainloop/data
-
 if [ -d "/ewomail/mysql/data" -a ! -e "/ewomail/mysql/data/first.runed" ]; then
     echo '初始化数据库'
     rm -rf /ewomail/mysql/data/*
@@ -131,6 +124,13 @@ smtp_php_mail = Off
 white_list = ""' > /ewomail/www/rainloop/data/_data_/_default_/domains/$domain.ini
 
 fi
+
+chown -R vmail:vmail /ewomail/mail
+chmod -R 700 /ewomail/mail
+chown -R mysql:mysql /ewomail/mysql/data
+chmod -R 700 /ewomail/mysql/data
+chown -R www:www /ewomail/www/rainloop/data
+chmod -R 770 /ewomail/www/rainloop/data
 
 echo ""
 echo "the configuration succeeds"
