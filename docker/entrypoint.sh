@@ -139,6 +139,7 @@ service rsyslog start
 service clamd start
 service spamassassin start
 service amavisd start
+freshclam
 service dovecot start
 service httpd start
 service postfix start
