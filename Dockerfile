@@ -43,7 +43,7 @@ ADD install/soft/httpd.conf   /ewomail/apache/conf/httpd.conf
 ADD install/soft/php.ini      /ewomail/php54/etc/
 ADD install/soft/php-cli.ini  /ewomail/php54/etc/
 ADD install/soft/dovecot.init /etc/rc.d/init.d/dovecot
-ADD install/config/mail/*     /ewomail/cmail/
+ADD install/config/mail     /ewomail/cmail
 
 # 清理换行
 RUN sed -i 's/\r$//' /etc/rc.d/init.d/httpd && \
