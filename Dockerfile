@@ -76,8 +76,7 @@ RUN chmod 755 /usr/local/dovecot/share/doc/dovecot/mkcert.sh && \
     echo "@dkim_signature_options_bysender_maps = ({" >> /etc/amavisd/amavisd.conf && \
     echo "# catchall defaults" >> /etc/amavisd/amavisd.conf && \
     echo "'.' => {c => 'relaxed/simple', ttl => 30*24*3600 }," >> /etc/amavisd/amavisd.conf && \
-    echo "} );"  >> /etc/amavisd/amavisd.conf && \
-    freshclam
+    echo "} );"  >> /etc/amavisd/amavisd.conf
 
 # 拷贝admin和rainloop
 ADD ewomail-admin/      /ewomail/www/ewomail-admin
